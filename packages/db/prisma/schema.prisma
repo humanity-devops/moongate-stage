@@ -1,0 +1,1710 @@
+// Moongate Sponsor Marketplace — Prisma Schema
+// Database: PostgreSQL 16
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// =============================================================================
+// MULTI-TENANCY
+// =============================================================================
+
+model Tenant {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  name         String
+  logoUrl      String?
+  primaryColor String?  @default("#6366f1")
+  accentColor  String?  @default("#f59e0b")
+  domain       String?  @unique
+  timezone     String   @default("UTC")
+  currency     String   @default("USD")
+  isActive         Boolean  @default(true)
+  commissionRate        Decimal? @db.Decimal(5, 4) // e.g. 0.0800 = 8%; null = use platform default
+  processingFeeProfile  String   @default("stripe") // stripe | hipay | radom
+  websiteUrl            String?
+  metadata              Json?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  memberships      Membership[]
+  events           Event[]
+  sponsorItems     SponsorItem[]
+  bids             Bid[]
+  orders           Order[]
+  invoices         Invoice[]
+  customInvoices   CustomInvoice[]
+  payouts          Payout[]
+  sponsorLeads     SponsorLead[]
+  sponsorCompanies SponsorCompany[]
+  auditLogs        AuditLog[]
+  webhookEvents    WebhookEvent[]
+  notifications    Notification[]
+  fileAssets       FileAsset[]
+  campaigns        CrowdfundCampaign[]
+  kycConfig        KycConfig?
+  kycTemplates     KycFormTemplate[]
+  proposals        Proposal[]
+  outreachContacts OutreachContact[]
+  userProfiles     UserProfile[]
+  membershipEvents MembershipEvent[]
+  packageTemplates PackageTemplate[]
+  cohorts          Cohort[]
+  featureFlags     FeatureFlag[]
+
+  @@map("tenants")
+}
+
+// =============================================================================
+// USERS AND MEMBERSHIPS
+// =============================================================================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  name          String?
+  avatarUrl     String?
+  passwordHash   String?
+  platformRole   String?   // platform_superadmin | platform_ops
+  referralCode   String?   @unique // their shareable referral code
+  referredByCode String?            // code used at signup
+  lastLoginAt    DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  memberships        Membership[]
+  sessions           Session[]
+  magicLinks         MagicLink[]
+  auditLogs          AuditLog[]
+  assignedBids       Bid[]     @relation("BidAssignee")
+  notifications      Notification[]
+  activityFeed       ActivityFeedEntry[]
+  profile            UserProfile?
+  membershipEvts     MembershipEvent[]
+  savedItems         SavedItem[]
+  sponsorApplication SponsorApplication?
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  userAgent String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@map("sessions")
+}
+
+model MagicLink {
+  id        String    @id @default(cuid())
+  userId    String
+  token     String    @unique
+  usedAt    DateTime?
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@map("magic_links")
+}
+
+model Membership {
+  id        String    @id @default(cuid())
+  userId    String
+  tenantId  String
+  role      String    // organizer_owner | organizer_admin | organizer_sales | organizer_finance | organizer_viewer
+  isActive  Boolean   @default(true)
+  status    String    @default("active")
+  invitedBy String?
+  joinedAt  DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tenantId])
+  @@index([tenantId])
+  @@map("memberships")
+}
+
+// =============================================================================
+// EVENTS
+// =============================================================================
+
+model Event {
+  id          String    @id @default(cuid())
+  tenantId    String
+  slug        String
+  name        String
+  tagline     String?
+  description String?
+  startDate   DateTime?
+  endDate     DateTime?
+  location    String?
+  city        String?
+  country     String?
+  timezone    String    @default("UTC")
+  websiteUrl  String?
+  status      String    @default("draft") // draft | published | archived
+  // Access control: public | whitelist | invite_only
+  accessMode      String    @default("public")
+  commissionRate  Decimal?  @db.Decimal(5, 4) // event-level override; null = use tenant/default
+  metadata        Json?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  tenant           Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  branding         EventBranding?
+  stats            EventStats?
+  sponsorshipDecks SponsorshipDeck[]
+  sponsorItems     SponsorItem[]
+  bids             Bid[]
+  orders           Order[]
+  sponsorLeads     SponsorLead[]
+  activityFeed     ActivityFeedEntry[]
+  campaigns        CrowdfundCampaign[]
+  accessGrants     EventAccessGrant[]
+  proposals        Proposal[]
+  accessLogs       AccessLog[]
+
+  @@unique([tenantId, slug])
+  @@index([tenantId])
+  @@index([status])
+  @@map("events")
+}
+
+// Single-use token or email allowlist entry for private event access
+model EventAccessGrant {
+  id        String    @id @default(cuid())
+  eventId   String
+  // 'email' = whitelist entry; 'token' = one-time link
+  grantType String
+  email     String?
+  token     String?   @unique
+  usedAt    DateTime?
+  expiresAt DateTime?
+  createdBy String?
+  createdAt DateTime  @default(now())
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+  @@index([token])
+  @@index([eventId, email])
+  @@map("event_access_grants")
+}
+
+model EventBranding {
+  id              String   @id @default(cuid())
+  eventId         String   @unique
+  primaryColor    String?
+  accentColor     String?
+  backgroundColor String?
+  textColor       String?
+  heroImageUrl    String?
+  logoUrl         String?
+  bannerImageUrl  String?
+  customCss       String?
+  fontFamily      String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@map("event_branding")
+}
+
+model EventStats {
+  id                  String   @id @default(cuid())
+  eventId             String   @unique
+  expectedAttendees   Int?
+  confirmedAttendees  Int?
+  onlineReach         Int?
+  mediaReach          Int?
+  newsletterSubs      Int?
+  socialFollowers     Json?    // { twitter: 5000, linkedin: 3000, ... }
+  internationalPct    Int?     // percentage
+  audienceProfile     String?  // markdown/text description
+  topicTags           String[]
+  previousEditions    Int?
+  sponsorsLastEdition Int?
+  metadata            Json?
+  updatedAt           DateTime @updatedAt
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@map("event_stats")
+}
+
+// =============================================================================
+// SPONSORSHIP DECKS AND AI EXTRACTION
+// =============================================================================
+
+model SponsorshipDeck {
+  id          String   @id @default(cuid())
+  eventId     String
+  tenantId    String
+  name        String
+  fileAssetId String?
+  pageCount   Int?
+  status      String   @default("pending") // pending | processing | completed | failed
+  uploadedBy  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  event          Event              @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  fileAsset      FileAsset?         @relation(fields: [fileAssetId], references: [id])
+  pageAssets     DeckPageAsset[]
+  extractionJobs ExtractionJob[]
+
+  @@index([eventId])
+  @@map("sponsorship_decks")
+}
+
+model DeckPageAsset {
+  id                       String  @id @default(cuid())
+  deckId                   String
+  pageNumber               Int
+  imageUrl                 String?
+  textContent              String?
+  classification           String? // cover | stats | value_proposition | sponsor_package | upgrade | add_on | contact | other
+  classificationConfidence Float?
+  createdAt                DateTime @default(now())
+
+  deck        SponsorshipDeck      @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  suggestions ExtractionSuggestion[]
+
+  @@unique([deckId, pageNumber])
+  @@map("deck_page_assets")
+}
+
+model ExtractionJob {
+  id            String    @id @default(cuid())
+  deckId        String
+  tenantId      String
+  status        String    @default("pending") // pending | processing | completed | failed
+  aiProvider    String?
+  aiModel       String?
+  promptVersion String?
+  rawOutput     Json?
+  errorMessage  String?
+  startedAt     DateTime?
+  completedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  deck        SponsorshipDeck      @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  suggestions ExtractionSuggestion[]
+
+  @@index([deckId])
+  @@map("extraction_jobs")
+}
+
+model ExtractionSuggestion {
+  id                String    @id @default(cuid())
+  jobId             String
+  deckId            String
+  pageAssetId       String?
+  sourcePageNumbers Int[]
+  type              String    // event_meta | stats | sponsor_item | upgrade | add_on | contact
+  rawText           String?
+  suggestedData     Json      // normalized suggested fields
+  confidence        Float     @default(0)
+  status            String    @default("pending") // pending | accepted | rejected | merged
+  reviewedBy        String?
+  reviewedAt        DateTime?
+  reviewNotes       String?
+  mergedItemId      String?   // if merged into a SponsorItem
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  job       ExtractionJob  @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  pageAsset DeckPageAsset? @relation(fields: [pageAssetId], references: [id])
+
+  @@index([jobId])
+  @@map("extraction_suggestions")
+}
+
+// =============================================================================
+// SPONSOR ITEMS
+// =============================================================================
+
+model SponsorItem {
+  id                 String    @id @default(cuid())
+  eventId            String
+  tenantId           String
+  slug               String
+  publicTitle        String
+  internalTitle      String?
+  shortDescription   String?
+  longDescription    String?
+  category           String    // title_sponsorship | sponsor_pack | booth | stage | branding | media | food_beverage | badge | ad_placement | side_event | custom | other
+  mode               String    @default("fixed_price") // fixed_price | sealed_bid | hybrid | request_only
+  currency           String    @default("USD")
+  listPrice          Decimal?  @db.Decimal(12, 2)
+  reservePrice       Decimal?  @db.Decimal(12, 2) // organizer-only
+  minimumBid         Decimal?  @db.Decimal(12, 2) // organizer-only — floor for bids
+  maximumBid         Decimal?  @db.Decimal(12, 2) // organizer-only — ceiling for bids
+  bidAllowed         Boolean   @default(false)
+  quantityTotal      Int?
+  quantitySold       Int       @default(0)
+  quantityReserved   Int       @default(0)
+  isExclusive        Boolean   @default(false)
+  status             String    @default("draft")
+  featured           Boolean   @default(false)
+  featuredOrder      Int?
+  packageTier        String?   // premium | mid_tier | lower_tier | custom
+  visibleToPublic    Boolean   @default(false)
+  visibleWhenSoldOut Boolean   @default(true)
+  checkoutEnabled    Boolean   @default(true)
+  depositEnabled     Boolean   @default(false)
+  depositPercentage  Decimal   @default(30) @db.Decimal(5, 2)
+  finalPaymentDays   Int?
+  requiresApproval   Boolean   @default(false)
+  onRequest          Boolean   @default(false)
+  limitedBadgeText   String?
+  soldBadgeText      String?
+  availableFrom      DateTime?
+  availableTo        DateTime?
+  deliveryNotes      String?
+  sortOrder          Int       @default(0)
+  sourceJobId        String?   // if created from AI extraction
+  // M2A: package-level access control (overrides event-level when set)
+  itemAccessMode     String?   // null = inherit event | public | whitelist_only | invite_only
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  event  Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  benefits      SponsorItemBenefit[]
+  rules         SponsorItemRule[]
+  inventory     SponsorItemInventory[]
+  assetReqs     SponsorItemAssetRequirement[]
+  bids          Bid[]
+  orderLines    OrderLine[]
+  fileAssets    SponsorItemFileAsset[]
+  campaigns     CrowdfundCampaign[]
+  accessGrants  ItemAccessGrant[]
+
+  @@unique([eventId, slug])
+  @@index([eventId])
+  @@index([tenantId])
+  @@index([status])
+  @@index([category])
+  @@map("sponsor_items")
+}
+
+model SponsorItemBenefit {
+  id        String   @id @default(cuid())
+  itemId    String
+  type      String   // stage_access | booth_size | booth_furnishing | logo_placement | website_visibility | social_mentions | newsletter_mentions | pass_count | custom
+  label     String
+  value     String?
+  quantity  Int?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  item SponsorItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@index([itemId])
+  @@map("sponsor_item_benefits")
+}
+
+model SponsorItemRule {
+  id           String   @id @default(cuid())
+  itemId       String
+  ruleType     String   // requires | excludes | upgrades | part_of
+  targetItemId String?
+  targetTier   String?
+  description  String?
+  createdAt    DateTime @default(now())
+
+  item SponsorItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@index([itemId])
+  @@map("sponsor_item_rules")
+}
+
+model SponsorItemInventory {
+  id         String    @id @default(cuid())
+  itemId     String
+  reference  String?   // slot identifier
+  status     String    @default("available") // available | reserved | sold
+  reservedBy String?
+  reservedAt DateTime?
+  soldAt     DateTime?
+  orderId    String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  item SponsorItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@index([itemId])
+  @@map("sponsor_item_inventory")
+}
+
+model SponsorItemAssetRequirement {
+  id          String    @id @default(cuid())
+  itemId      String
+  label       String
+  description String?
+  fileTypes   String[]  // pdf | png | jpg | svg | mp4 | zip
+  required    Boolean   @default(true)
+  dueDate     DateTime?
+  createdAt   DateTime  @default(now())
+
+  item        SponsorItem       @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  submissions AssetSubmission[]
+
+  @@index([itemId])
+  @@map("sponsor_item_asset_requirements")
+}
+
+model SponsorItemFileAsset {
+  id          String   @id @default(cuid())
+  itemId      String
+  fileAssetId String
+  label       String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  item      SponsorItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  fileAsset FileAsset   @relation(fields: [fileAssetId], references: [id])
+
+  @@map("sponsor_item_file_assets")
+}
+
+// =============================================================================
+// SPONSOR COMPANIES AND CONTACTS
+// =============================================================================
+
+model SponsorCompany {
+  id          String   @id @default(cuid())
+  tenantId    String
+  name        String
+  website     String?
+  industry    String?
+  logoUrl     String?
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tenant   Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  contacts SponsorContact[]
+  leads    SponsorLead[]
+  bids     Bid[]
+  orders   Order[]
+
+  @@index([tenantId])
+  @@map("sponsor_companies")
+}
+
+model SponsorContact {
+  id               String    @id @default(cuid())
+  sponsorCompanyId String?
+  tenantId         String
+  name             String
+  email            String
+  phone            String?
+  telegram         String?
+  whatsapp         String?
+  title            String?
+  portalToken      String?   @unique // for sponsor portal access
+  portalTokenExp   DateTime?
+  emailVerified    Boolean   @default(false)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  company          SponsorCompany?   @relation(fields: [sponsorCompanyId], references: [id])
+  leads            SponsorLead[]
+  bids             Bid[]
+  assetSubmissions AssetSubmission[]
+
+  @@index([email])
+  @@index([portalToken])
+  @@map("sponsor_contacts")
+}
+
+model SponsorLead {
+  id          String   @id @default(cuid())
+  tenantId    String
+  eventId     String
+  contactId   String?
+  companyId   String?
+  source      String?  // organic | referral | direct | email
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  notes       String?
+  createdAt   DateTime @default(now())
+
+  tenant  Tenant          @relation(fields: [tenantId], references: [id])
+  event   Event           @relation(fields: [eventId], references: [id])
+  contact SponsorContact? @relation(fields: [contactId], references: [id])
+  company SponsorCompany? @relation(fields: [companyId], references: [id])
+
+  @@index([tenantId, eventId])
+  @@map("sponsor_leads")
+}
+
+// =============================================================================
+// BIDS AND NEGOTIATIONS
+// =============================================================================
+
+model Bid {
+  id               String    @id @default(cuid())
+  tenantId         String
+  eventId          String
+  itemId           String
+  sponsorCompanyId String?
+  sponsorContactId String?
+  status           String    @default("submitted") // submitted | under_review | countered | accepted | rejected | expired | withdrawn
+  companyName      String
+  contactName      String
+  email            String
+  telegram         String?
+  whatsapp         String?
+  proposedBudget   Decimal   @db.Decimal(12, 2)
+  currency         String    @default("USD")
+  notes            String?
+  customAsks       String?
+  termsAccepted    Boolean   @default(false)
+  internalNotes    String?
+  assignedToId     String?
+  expiresAt        DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  tenant         Tenant          @relation(fields: [tenantId], references: [id])
+  event          Event           @relation(fields: [eventId], references: [id])
+  item           SponsorItem     @relation(fields: [itemId], references: [id])
+  sponsorCompany SponsorCompany? @relation(fields: [sponsorCompanyId], references: [id])
+  sponsorContact SponsorContact? @relation(fields: [sponsorContactId], references: [id])
+  assignedTo     User?           @relation("BidAssignee", fields: [assignedToId], references: [id])
+  attachments    BidAttachment[]
+  messages       BidMessage[]
+  counterOffers  CounterOffer[]
+  order          Order?
+  dealMembers    DealMember[]
+
+  @@index([tenantId])
+  @@index([eventId])
+  @@index([itemId])
+  @@index([status])
+  @@map("bids")
+}
+
+model BidAttachment {
+  id          String   @id @default(cuid())
+  bidId       String
+  fileAssetId String
+  label       String?
+  createdAt   DateTime @default(now())
+
+  bid       Bid       @relation(fields: [bidId], references: [id], onDelete: Cascade)
+  fileAsset FileAsset @relation(fields: [fileAssetId], references: [id])
+
+  @@map("bid_attachments")
+}
+
+model BidMessage {
+  id         String   @id @default(cuid())
+  bidId      String
+  authorType String   // organizer | sponsor
+  authorId   String?
+  authorName String
+  content    String
+  isInternal Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  bid Bid @relation(fields: [bidId], references: [id], onDelete: Cascade)
+
+  @@index([bidId])
+  @@map("bid_messages")
+}
+
+model CounterOffer {
+  id           String    @id @default(cuid())
+  bidId        String
+  offeredPrice Decimal   @db.Decimal(12, 2)
+  currency     String
+  message      String?
+  validUntil   DateTime?
+  status       String    @default("pending") // pending | accepted | rejected | superseded
+  respondedAt  DateTime?
+  createdAt    DateTime  @default(now())
+
+  bid Bid @relation(fields: [bidId], references: [id], onDelete: Cascade)
+
+  @@index([bidId])
+  @@map("counter_offers")
+}
+
+// =============================================================================
+// ORDERS AND PAYMENTS
+// =============================================================================
+
+model Order {
+  id                    String    @id @default(cuid())
+  tenantId              String
+  eventId               String
+  bidId                 String?   @unique
+  sponsorCompanyId      String?
+  sponsorContactId      String?
+  status                String    @default("pending") // pending | payment_pending | paid | fulfilled | cancelled | refunded
+  currency              String    @default("USD")
+  subtotal              Decimal   @db.Decimal(12, 2)
+  taxAmount             Decimal   @default(0) @db.Decimal(12, 2)
+  discountAmount        Decimal   @default(0) @db.Decimal(12, 2)
+  total                 Decimal   @db.Decimal(12, 2)
+  fullAmount            Decimal?  @db.Decimal(12, 2)
+  depositAmount         Decimal?  @db.Decimal(12, 2)
+  balanceDueAmount      Decimal?  @db.Decimal(12, 2)
+  paymentStage          String    @default("full") // full | deposit | balance
+  depositPaidAt         DateTime?
+  finalPaymentDueAt     DateTime?
+  finalReminderSentAt   DateTime?
+  stripePaymentIntentId String?
+  stripeSessionId       String?
+  // Platform fee (set immutably on payment success)
+  platformFeeRate       Decimal?  @db.Decimal(5, 4)   // effective rate, e.g. 0.0800
+  platformFeeAmount     Decimal?  @db.Decimal(12, 2)  // fee charged to organiser
+  merchantNetAmount     Decimal?  @db.Decimal(12, 2)  // total - platformFeeAmount
+  commissionSource      String?                        // 'event_override' | 'merchant_override' | 'default'
+  // Processing fee profile (snapshot at payment time)
+  processingFeeProfile  String?                        // 'stripe' | 'hipay' | 'radom'
+  processingFeeRate     Decimal?  @db.Decimal(5, 4)   // e.g. 0.0450 for Stripe 4.5%
+  processingFeeAmount   Decimal?  @db.Decimal(12, 2)  // processing fee amount
+  invoiceNumber         String?
+  invoiceRequestedAt    DateTime?
+  paidAt                DateTime?
+  notes                 String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  tenant         Tenant          @relation(fields: [tenantId], references: [id])
+  event          Event           @relation(fields: [eventId], references: [id])
+  bid            Bid?            @relation(fields: [bidId], references: [id])
+  sponsorCompany SponsorCompany? @relation(fields: [sponsorCompanyId], references: [id])
+  lines          OrderLine[]
+  payments       Payment[]
+  checkoutSessions CheckoutSession[]
+  invoice        Invoice?
+  payoutItem     PayoutItem?
+
+  @@index([tenantId])
+  @@index([eventId])
+  @@index([status])
+  @@map("orders")
+}
+
+model OrderLine {
+  id        String   @id @default(cuid())
+  orderId   String
+  itemId    String
+  quantity  Int      @default(1)
+  unitPrice Decimal  @db.Decimal(12, 2)
+  total     Decimal  @db.Decimal(12, 2)
+  label     String?
+  createdAt DateTime @default(now())
+
+  order Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  item  SponsorItem @relation(fields: [itemId], references: [id])
+
+  @@index([orderId])
+  @@map("order_lines")
+}
+
+model CheckoutSession {
+  id                String    @id @default(cuid())
+  orderId           String
+  provider          String    @default("stripe") // stripe | manual | crypto
+  externalSessionId String?
+  status            String    @default("created") // created | completed | expired | cancelled
+  checkoutUrl       String?
+  expiresAt         DateTime?
+  completedAt       DateTime?
+  metadata          Json?
+  createdAt         DateTime  @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@map("checkout_sessions")
+}
+
+model Payment {
+  id         String   @id @default(cuid())
+  orderId    String
+  provider   String   // stripe | manual | crypto
+  externalId String?
+  amount     Decimal  @db.Decimal(12, 2)
+  currency   String
+  status     String   // succeeded | pending | failed | refunded
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@map("payments")
+}
+
+model Invoice {
+  id              String   @id @default(cuid())
+  orderId         String   @unique
+  tenantId        String
+  invoiceNumber   String   @unique
+  billedToEmail   String
+  billedToName    String?
+  billedToCompany String?
+  subtotal        Decimal  @db.Decimal(12, 2)
+  platformFee     Decimal  @default(0) @db.Decimal(12, 2)
+  total           Decimal  @db.Decimal(12, 2)
+  currency        String   @default("USD")
+  lines           Json     // snapshot of line items at time of payment
+  issuedAt        DateTime @default(now())
+  metadata        Json?
+
+  order  Order  @relation(fields: [orderId], references: [id])
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId])
+  @@map("invoices")
+}
+
+// =============================================================================
+// SPONSOR ASSET COLLECTION
+// =============================================================================
+
+model AssetSubmission {
+  id            String    @id @default(cuid())
+  requirementId String
+  contactId     String?
+  fileAssetId   String
+  status        String    @default("submitted") // submitted | approved | rejected
+  notes         String?
+  reviewedBy    String?
+  reviewedAt    DateTime?
+  createdAt     DateTime  @default(now())
+
+  requirement SponsorItemAssetRequirement @relation(fields: [requirementId], references: [id])
+  contact     SponsorContact?             @relation(fields: [contactId], references: [id])
+  fileAsset   FileAsset                   @relation(fields: [fileAssetId], references: [id])
+
+  @@index([requirementId])
+  @@map("asset_submissions")
+}
+
+model FileAsset {
+  id           String   @id @default(cuid())
+  tenantId     String
+  originalName String
+  storagePath  String
+  publicUrl    String?
+  mimeType     String
+  sizeBytes    BigInt
+  sha256       String?
+  uploadedBy   String?
+  isPublic     Boolean  @default(false)
+  metadata     Json?
+  createdAt    DateTime @default(now())
+
+  tenant           Tenant                @relation(fields: [tenantId], references: [id])
+  deckUploads      SponsorshipDeck[]
+  bidAttachments   BidAttachment[]
+  assetSubmissions AssetSubmission[]
+  itemFiles        SponsorItemFileAsset[]
+
+  @@index([tenantId])
+  @@map("file_assets")
+}
+
+// =============================================================================
+// SPONSOR PORTAL
+// =============================================================================
+
+model SavedItem {
+  id         String   @id @default(cuid())
+  userId     String
+  entityType String   // 'event' | 'item'
+  entityId   String
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, entityType, entityId])
+  @@index([userId])
+  @@map("saved_items")
+}
+
+model EmailLog {
+  id           String    @id @default(cuid())
+  to           String
+  subject      String
+  template     String
+  status       String    @default("pending")
+  provider     String?
+  providerId   String?
+  error        String?
+  retryCount   Int       @default(0)
+  lastAttemptAt DateTime?
+  sentAt       DateTime?
+  userId       String?
+  tenantId     String?
+  resourceId   String?
+  resourceType String?
+  metadata     Json?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([status])
+  @@index([template])
+  @@index([userId])
+  @@index([tenantId])
+  @@index([createdAt])
+  @@map("email_logs")
+}
+
+model SponsorApplication {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  name              String
+  company           String?
+  websiteUrl        String?
+  role              String    @default("sponsor")
+  utmSource         String?
+  utmMedium         String?
+  utmCampaign       String?
+  referrer          String?
+  referredByCode    String?
+  consentAt         DateTime?
+  consentVersion    String    @default("1.0")
+  termsAccepted     Boolean   @default(false)
+  status            String    @default("submitted")
+  emailVerifiedAt   DateTime?
+  emailVerifyToken  String?   @unique
+  emailVerifyExpiry DateTime?
+  reviewedBy        String?
+  reviewedAt        DateTime?
+  adminNotes        String?
+  rejectionReason   String?
+  userId            String?   @unique
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  user              User?     @relation(fields: [userId], references: [id])
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("sponsor_applications")
+}
+
+model TenantProvisioningLog {
+  id        String   @id @default(cuid())
+  tenantId  String?
+  userId    String
+  step      String
+  status    String
+  error     String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([tenantId])
+  @@map("tenant_provisioning_logs")
+}
+
+// =============================================================================
+// OBSERVABILITY AND AUDIT
+// =============================================================================
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  tenantId   String?
+  userId     String?
+  action     String   // created | updated | deleted | published | accepted | rejected | etc.
+  resource   String   // event | sponsor_item | bid | order | etc.
+  resourceId String?
+  before     Json?
+  after      Json?
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  tenant Tenant? @relation(fields: [tenantId], references: [id])
+  user   User?   @relation(fields: [userId], references: [id])
+
+  @@index([tenantId])
+  @@index([userId])
+  @@index([resource, resourceId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model ActivityFeedEntry {
+  id           String   @id @default(cuid())
+  tenantId     String
+  eventId      String?
+  userId       String?
+  type         String   // bid_submitted | item_published | order_created | etc.
+  title        String
+  body         String?
+  resourceId   String?
+  resourceType String?
+  metadata     Json?
+  createdAt    DateTime @default(now())
+
+  event Event? @relation(fields: [eventId], references: [id])
+  user  User?  @relation(fields: [userId], references: [id])
+
+  @@index([tenantId, eventId])
+  @@index([createdAt])
+  @@map("activity_feed_entries")
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  tenantId  String?
+  userId    String
+  type      String
+  title     String
+  body      String?
+  data      Json?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  tenant Tenant? @relation(fields: [tenantId], references: [id])
+  user   User    @relation(fields: [userId], references: [id])
+
+  @@index([userId, readAt])
+  @@index([userId, createdAt])
+  @@map("notifications")
+}
+
+model WebhookEvent {
+  id          String    @id @default(cuid())
+  tenantId    String?
+  provider    String    // stripe | internal
+  eventType   String
+  payload     Json
+  signature   String?
+  processed   Boolean   @default(false)
+  processedAt DateTime?
+  error       String?
+  createdAt   DateTime  @default(now())
+
+  tenant Tenant? @relation(fields: [tenantId], references: [id])
+
+  @@index([provider, eventType])
+  @@index([processed])
+  @@map("webhook_events")
+}
+
+// =============================================================================
+// CROWDFUNDING
+// =============================================================================
+
+// A community campaign where an entity competes for a sponsorship package.
+// Multiple campaigns can run for the same item. The first to reach goalAmount wins.
+model CrowdfundCampaign {
+  id                String    @id @default(cuid())
+  tenantId          String
+  eventId           String
+  itemId            String
+
+  // The applying entity
+  entityName        String
+  entityDescription String?
+  entityWebsite     String?
+  contactName       String
+  contactEmail      String
+
+  // Funding goal = item list price (or custom for request_only items)
+  goalAmount        Decimal   @db.Decimal(12, 2)
+  raisedAmount      Decimal   @default(0) @db.Decimal(12, 2)
+  currency          String    @default("USD")
+
+  // Campaign window
+  deadline          DateTime
+  // active | won | lost | expired | cancelled
+  status            String    @default("active")
+  wonAt             DateTime?
+
+  // Approval workflow: pending | approved | rejected
+  approvalStatus    String    @default("pending")
+  approvedBy        String?
+  approvedAt        DateTime?
+  rejectionReason   String?
+  // M6: verification status: none | verification_pending | verified | rejected
+  verificationStatus String   @default("none")
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  tenant                Tenant                         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  event                 Event                          @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  item                  SponsorItem                    @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  contributions         CrowdfundContribution[]
+  verificationRequests  CrowdfundVerificationRequest[]
+
+  @@index([tenantId])
+  @@index([eventId])
+  @@index([itemId])
+  @@index([status])
+  @@map("crowdfund_campaigns")
+}
+
+// =============================================================================
+// KYC / PARTNER ONBOARDING
+// =============================================================================
+
+// Per-tenant configuration: which fields/docs are required for KYC.
+model KycConfig {
+  id        String   @id @default(cuid())
+  tenantId  String   @unique
+  fields    Json     // Array of { key, label, type: 'text'|'file'|'select', required, options? }
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant      Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  submissions KycSubmission[]
+
+  @@map("kyc_configs")
+}
+
+// One KYC submission per bid/order after acceptance/payment.
+model KycSubmission {
+  id          String    @id @default(cuid())
+  tenantId    String
+  kycConfigId String
+  bidId       String?   @unique
+  orderId     String?   @unique
+  contactId   String?
+  // not_started | submitted | approved | rejected | needs_more_info
+  status      String    @default("not_started")
+  data        Json?     // Submitted field values (non-file)
+  reviewedBy  String?
+  reviewedAt  DateTime?
+  reviewNotes String?
+  templateId  String?   // optional: linked KycFormTemplate
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  config       KycConfig      @relation(fields: [kycConfigId], references: [id])
+  notes        KycNote[]
+  auditEntries KycAuditEntry[]
+  formRequests KycFormRequest[]
+
+  @@index([tenantId])
+  @@index([status])
+  @@map("kyc_submissions")
+}
+
+// =============================================================================
+// ANALYTICS
+// =============================================================================
+
+model AnalyticsEvent {
+  id         String   @id @default(cuid())
+  tenantId   String?
+  // page_viewed | package_viewed | deck_viewed | cta_click | auth_redirect | bid_milestone
+  eventType  String
+  userId     String?  // null for anonymous
+  sessionId  String?
+  resourceId String?  // event/item/deck id being tracked
+  resourceType String? // event | sponsor_item | deck
+  referrer   String?
+  utmSource  String?
+  utmMedium  String?
+  utmCampaign String?
+  device     String?  // mobile | desktop | tablet
+  country    String?
+  // Extra key/value pairs (page path, bid amount, etc.)
+  metadata   Json?
+  // Anonymized after retention period: user_id nulled out
+  anonymizedAt DateTime?
+  createdAt  DateTime @default(now())
+
+  @@index([tenantId, eventType])
+  @@index([tenantId, createdAt])
+  @@index([resourceId, resourceType])
+  @@index([createdAt])
+  @@map("analytics_events")
+}
+
+// An individual pledge/contribution to a crowdfund campaign.
+model CrowdfundContribution {
+  id               String   @id @default(cuid())
+  campaignId       String
+  contributorName  String
+  contributorEmail String
+  message          String?
+  amount           Decimal  @db.Decimal(12, 2)
+  currency         String   @default("USD")
+  userId           String?
+  orderId          String?  @unique
+  // pending_payment | confirmed | refunded | cancelled
+  status           String   @default("confirmed")
+  createdAt        DateTime @default(now())
+
+  campaign CrowdfundCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@index([campaignId])
+  @@index([userId])
+  @@map("crowdfund_contributions")
+}
+
+// =============================================================================
+// PROPOSALS (custom sponsorship proposals submitted by sponsors)
+// =============================================================================
+
+model Proposal {
+  id           String   @id @default(cuid())
+  tenantId     String
+  eventId      String
+  contactName  String
+  contactEmail String
+  companyName  String
+  // draft | submitted | under_review | accepted | rejected
+  status       String   @default("draft")
+  totalBudget  Decimal  @db.Decimal(12, 2)
+  currency     String   @default("USD")
+  notes        String?
+  // Snapshot of the package builder output (array of component configs)
+  packageData  Json?
+  reviewedById String?
+  reviewedAt   DateTime?
+  rejectedReason String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  tenant Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  event  Event          @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  items  ProposalItem[]
+
+  @@index([tenantId])
+  @@index([eventId])
+  @@index([status])
+  @@index([contactEmail])
+  @@map("proposals")
+}
+
+model ProposalItem {
+  id          String  @id @default(cuid())
+  proposalId  String
+  itemId      String?   // optional link to an existing SponsorItem
+  label       String
+  description String?
+  quantity    Int     @default(1)
+  unitPrice   Decimal @db.Decimal(12, 2)
+  total       Decimal @db.Decimal(12, 2)
+  sortOrder   Int     @default(0)
+
+  proposal Proposal    @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  @@index([proposalId])
+  @@map("proposal_items")
+}
+
+// =============================================================================
+// OUTREACH (organizer contact database + invite pipeline)
+// =============================================================================
+
+model OutreachContact {
+  id           String   @id @default(cuid())
+  tenantId     String
+  name         String
+  email        String
+  company      String?
+  title        String?
+  linkedinUrl  String?
+  notes        String?
+  // new | contacted | responded | converted | archived
+  status       String   @default("new")
+  tags         String[] @default([])
+  inviteCode   String?  @unique @default(cuid())
+  inviteSentAt DateTime?
+  convertedAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, email])
+  @@index([tenantId])
+  @@index([status])
+  @@map("outreach_contacts")
+}
+
+// =============================================================================
+// EARLY ACCESS (platform-level waitlist / membership)
+// =============================================================================
+
+model EarlyAccessMember {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String?
+  company     String?
+  websiteUrl  String?  // company website or X/Twitter URL
+  role        String?  // organizer | sponsor | both
+  referrer    String?  // utm_source or referring email
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  // Legal consent
+  consentAt      DateTime?
+  consentVersion String?
+  // Referral tracking
+  referralCode    String?  @unique @default(cuid()) // their shareable referral code
+  referredByCode  String?                            // code they used when signing up
+  // waitlisted | invited | onboarded
+  status      String   @default("waitlisted")
+  inviteCode  String?  @unique @default(cuid())
+  invitedAt   DateTime?
+  onboardedAt DateTime?
+  // Admin workflow fields
+  // new | reviewed | contacted | archived
+  internalStatus String   @default("new")
+  adminNotes     String?
+  reviewedBy     String?
+  reviewedAt     DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status])
+  @@index([internalStatus])
+  @@index([createdAt])
+  @@map("early_access_members")
+}
+
+// =============================================================================
+// USER PROFILES
+// =============================================================================
+
+model UserProfile {
+  id       String  @id @default(cuid())
+  userId   String  @unique
+  tenantId String
+  bio      String?
+  phone    String?
+  telegram String?
+  twitter  String?
+  linkedin String?
+  website  String?
+  company  String?
+  jobTitle String?
+  location String?
+  timezone String?
+  segment  String?
+  tags     String[]
+  metadata Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@map("user_profiles")
+}
+
+model MembershipEvent {
+  id         String   @id @default(cuid())
+  tenantId   String
+  userId     String
+  actorId    String?
+  event      String
+  fromStatus String?
+  toStatus   String?
+  fromRole   String?
+  toRole     String?
+  notes      String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, userId])
+  @@index([createdAt])
+  @@map("membership_events")
+}
+
+// =============================================================================
+// ACCESS LOGS
+// =============================================================================
+
+model AccessLog {
+  id         String   @id @default(cuid())
+  eventId    String
+  grantType  String?
+  identifier String?
+  result     String
+  reason     String?
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+  @@index([createdAt])
+  @@map("access_logs")
+}
+
+// =============================================================================
+// PACKAGE TEMPLATES
+// =============================================================================
+
+model PackageTemplate {
+  id          String   @id @default(cuid())
+  tenantId    String
+  name        String
+  description String?
+  items       Json
+  isActive    Boolean  @default(true)
+  createdBy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@map("package_templates")
+}
+
+// =============================================================================
+// COHORTS
+// =============================================================================
+
+model Cohort {
+  id          String   @id @default(cuid())
+  tenantId    String
+  name        String
+  description String?
+  filters     Json?
+  createdBy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tenant  Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  members CohortMember[]
+
+  @@index([tenantId])
+  @@map("cohorts")
+}
+
+model CohortMember {
+  id        String   @id @default(cuid())
+  cohortId  String
+  contactId String?
+  userId    String?
+  addedAt   DateTime @default(now())
+
+  cohort Cohort @relation(fields: [cohortId], references: [id], onDelete: Cascade)
+
+  @@unique([cohortId, contactId])
+  @@index([cohortId])
+  @@map("cohort_members")
+}
+
+// =============================================================================
+// FEATURE FLAGS
+// =============================================================================
+
+model FeatureFlag {
+  id        String   @id @default(cuid())
+  tenantId  String
+  key       String
+  enabled   Boolean  @default(false)
+  config    Json?
+  updatedBy String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, key])
+  @@index([tenantId])
+  @@map("feature_flags")
+}
+
+// =============================================================================
+// M2A — PACKAGE-LEVEL ACCESS GRANTS
+// =============================================================================
+
+model ItemAccessGrant {
+  id        String    @id @default(cuid())
+  itemId    String
+  grantType String    @default("email") // email | token
+  email     String?
+  token     String?   @unique
+  usedAt    DateTime?
+  expiresAt DateTime?
+  createdBy String?
+  createdAt DateTime  @default(now())
+
+  item SponsorItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@unique([itemId, email])
+  @@index([itemId])
+  @@index([token])
+  @@map("item_access_grants")
+}
+
+// =============================================================================
+// M2B — KYC NOTES + AUDIT TRAIL
+// =============================================================================
+
+model KycNote {
+  id           String        @id @default(cuid())
+  submissionId String
+  authorId     String
+  authorName   String
+  content      String
+  isInternal   Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+
+  submission KycSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([submissionId])
+  @@map("kyc_notes")
+}
+
+// Chronological action trail for a KYC submission
+model KycAuditEntry {
+  id           String        @id @default(cuid())
+  submissionId String
+  // approved | rejected | needs_more_info | note_added | status_changed | form_sent | form_submitted
+  action       String
+  actorId      String?
+  actorName    String
+  fromStatus   String?
+  toStatus     String?
+  reason       String?
+  metadata     Json?
+  createdAt    DateTime      @default(now())
+
+  submission KycSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([submissionId, createdAt])
+  @@map("kyc_audit_entries")
+}
+
+// =============================================================================
+// M2C — KYC FORM TEMPLATES (merchant-configurable, sent to sponsor)
+// =============================================================================
+
+model KycFormTemplate {
+  id          String   @id @default(cuid())
+  tenantId    String
+  name        String
+  description String?
+  // Array of { id, type: text|textarea|file|select|checkbox, label, required, options?, placeholder? }
+  fields      Json
+  isActive    Boolean  @default(true)
+  createdBy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tenant   Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  requests KycFormRequest[]
+
+  @@index([tenantId])
+  @@map("kyc_form_templates")
+}
+
+// A form request sent from merchant to a specific sponsor for a deal
+model KycFormRequest {
+  id           String    @id @default(cuid())
+  tenantId     String
+  templateId   String
+  submissionId String?   // optionally linked to a KycSubmission
+  bidId        String?
+  sentToEmail  String
+  sentToName   String?
+  token        String    @unique @default(cuid())
+  // pending | submitted | reviewed
+  status       String    @default("pending")
+  response     Json?     // sponsor-submitted field answers
+  submittedAt  DateTime?
+  reviewedBy   String?
+  reviewedAt   DateTime?
+  reviewNotes  String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  template    KycFormTemplate  @relation(fields: [templateId], references: [id])
+  submission  KycSubmission?   @relation(fields: [submissionId], references: [id])
+
+  @@index([tenantId])
+  @@index([token])
+  @@index([bidId])
+  @@map("kyc_form_requests")
+}
+
+// =============================================================================
+// M4B — DEAL TEAM COLLABORATION
+// =============================================================================
+
+model DealMember {
+  id        String   @id @default(cuid())
+  bidId     String
+  userId    String
+  // owner | collaborator | viewer
+  role      String   @default("collaborator")
+  addedById String?
+  createdAt DateTime @default(now())
+
+  bid Bid @relation(fields: [bidId], references: [id], onDelete: Cascade)
+
+  @@unique([bidId, userId])
+  @@index([bidId])
+  @@index([userId])
+  @@map("deal_members")
+}
+
+// =============================================================================
+// M6 — CROWDFUNDING VERIFICATION REQUESTS
+// =============================================================================
+
+model CrowdfundVerificationRequest {
+  id          String    @id @default(cuid())
+  campaignId  String
+  requestedBy String
+  // identity | document | context | other
+  type        String    @default("context")
+  description String
+  // pending | submitted | reviewed
+  status      String    @default("pending")
+  response    String?
+  respondedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  campaign CrowdfundCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@index([campaignId])
+  @@map("crowdfund_verification_requests")
+}
+
+// =============================================================================
+// PAYOUTS — merchant settlement ledger
+// =============================================================================
+
+model Payout {
+  id          String    @id @default(cuid())
+  tenantId    String
+  status      String    @default("pending") // pending | processing | paid | failed | cancelled
+  currency    String    @default("USD")
+  grossAmount Decimal   @db.Decimal(12, 2)  // sum of merchantNetAmount for included orders
+  feeAmount   Decimal   @default(0) @db.Decimal(12, 2) // any additional payout processing fee
+  netAmount   Decimal   @db.Decimal(12, 2)  // grossAmount - feeAmount
+  periodStart DateTime?
+  periodEnd   DateTime?
+  paidAt      DateTime?
+  reference   String?   // external wire/transfer reference
+  notes       String?
+  metadata    Json?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  tenant Tenant      @relation(fields: [tenantId], references: [id])
+  items  PayoutItem[]
+
+  @@index([tenantId])
+  @@index([status])
+  @@map("payouts")
+}
+
+model PayoutItem {
+  id        String   @id @default(cuid())
+  payoutId  String
+  orderId   String   @unique // each order can only appear in one payout
+  amount    Decimal  @db.Decimal(12, 2) // merchantNetAmount from the order
+  createdAt DateTime @default(now())
+
+  payout Payout @relation(fields: [payoutId], references: [id], onDelete: Cascade)
+  order  Order  @relation(fields: [orderId], references: [id])
+
+  @@index([payoutId])
+  @@map("payout_items")
+}
+
+// =============================================================================
+// CUSTOM INVOICES — merchant-created invoices (standalone, not auto-generated)
+// =============================================================================
+
+model CustomInvoice {
+  id               String    @id @default(cuid())
+  tenantId         String
+  invoiceNumber    String    @unique
+  status           String    @default("draft") // draft | sent | paid | cancelled
+  recipientEmail   String
+  recipientName    String?
+  recipientCompany String?
+  currency         String    @default("USD")
+  lines            Json      // [{label, quantity, unitPrice, total}]
+  subtotal         Decimal   @db.Decimal(12, 2)
+  taxRate          Decimal   @default(0) @db.Decimal(5, 4)
+  taxAmount        Decimal   @default(0) @db.Decimal(12, 2)
+  discountAmount   Decimal   @default(0) @db.Decimal(12, 2)
+  total            Decimal   @db.Decimal(12, 2)
+  dueDate          DateTime?
+  notes            String?
+  legalText        String?
+  issuedAt         DateTime?
+  paidAt           DateTime?
+  orderId          String?   // optional link to auto-generated order
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId])
+  @@index([status])
+  @@map("custom_invoices")
+}
+
+// =============================================================================
+// REFERRAL CODES — standalone code registry (separate from EarlyAccessMember)
+// =============================================================================
+
+model ReferralCode {
+  id         String    @id @default(cuid())
+  code       String    @unique
+  // generated | sent | used | expired
+  status     String    @default("generated")
+  label      String?
+  assignedTo String?   // email address this code was sent to
+  usedBy     String?   // email address who signed up with this code
+  usedAt     DateTime?
+  expiresAt  DateTime?
+  revokedAt  DateTime?
+  createdBy  String?   // platform admin user id
+  source     String?   // e.g. 'ethdenver-batch', 'manual', 'csv-import'
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([status])
+  @@index([assignedTo])
+  @@map("referral_codes")
+}

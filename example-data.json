@@ -1,0 +1,1124 @@
+{
+  "tenant": {
+    "slug": "ethglobal",
+    "name": "ETHGlobal",
+    "primaryColor": "#6366f1",
+    "accentColor": "#f59e0b",
+    "currency": "USD"
+  },
+
+  "teamMembers": [
+    { "email": "admin@ethglobal.com",      "name": "Alex Rivera",   "password": "admin-2026",      "role": "organizer_owner",      "jobTitle": "Co-Founder & CEO",     "location": "San Francisco, CA",  "segment": "builder",    "tags": ["ethereum","events","community"] },
+    { "email": "sales@ethglobal.com",      "name": "Sara Malik",    "password": "sales-2026",      "role": "organizer_sales",      "jobTitle": "Head of Sponsorship",  "location": "New York, NY",       "segment": "enterprise", "tags": ["sales","partnerships","defi"] },
+    { "email": "ops@ethglobal.com",        "name": "James Park",    "password": "ops-2026",        "role": "organizer_ops",        "jobTitle": "Head of Operations",   "location": "Toronto, Canada",    "segment": "builder",    "tags": ["ops","logistics"] },
+    { "email": "growth@ethglobal.com",     "name": "Maya Patel",    "password": "growth-2026",     "role": "organizer_growth",     "jobTitle": "Growth Lead",          "location": "London, UK",         "segment": "community",  "tags": ["growth","outreach","web3"] },
+    { "email": "analytics@ethglobal.com",  "name": "Chris Wong",    "password": "analytics-2026",  "role": "organizer_analytics",  "jobTitle": "Data Analyst",         "location": "Singapore",          "segment": "builder",    "tags": ["data","analytics"] },
+    { "email": "compliance@ethglobal.com", "name": "Priya Sharma",  "password": "compliance-2026", "role": "organizer_compliance", "jobTitle": "Compliance Manager",   "location": "Dubai, UAE",         "segment": "enterprise", "tags": ["kyc","compliance","legal"] },
+    { "email": "finance@ethglobal.com",    "name": "Tom Bradley",   "password": "finance-2026",    "role": "organizer_finance",    "jobTitle": "Finance Manager",      "location": "Edinburgh, UK",      "segment": "enterprise", "tags": ["finance","payments"] },
+    { "email": "viewer@ethglobal.com",     "name": "Dana Lee",      "password": "viewer-2026",     "role": "organizer_viewer",     "jobTitle": "Board Advisor",        "location": "Seoul, South Korea", "segment": "investor",   "tags": ["advisory"] }
+  ],
+
+  "platformAdmin": {
+    "email": "platform@moongate.xyz",
+    "name": "Platform Admin",
+    "password": "moongate-admin-2026",
+    "platformRole": "platform_superadmin"
+  },
+
+  "sponsorUser": {
+    "email": "alice@acme.xyz",
+    "name": "Alice Chen",
+    "password": "alice-2026",
+    "referralCode": "ACME-ALICE",
+    "referredByCode": "ETHGLOBAL-EARLY",
+    "title": "Head of Partnerships",
+    "phone": "+1 (415) 555-0192",
+    "telegram": "@alicechen",
+    "company": "Acme Protocol",
+    "companyWebsite": "https://acme.xyz",
+    "companyIndustry": "DeFi / L2 Infrastructure",
+    "companyDescription": "Acme Protocol is a leading Layer 2 scaling solution powering 12M+ weekly transactions."
+  },
+
+  "events": [
+    {
+      "slug": "ethmilan-2025",
+      "name": "ETHMilan 2025",
+      "tagline": "The Premier Ethereum Conference in Southern Europe",
+      "description": "ETHMilan 2025 brings together the brightest minds in Ethereum, DeFi, and Web3 for two days of talks, workshops, and networking in the heart of Milan. Join 800+ developers, founders, investors, and ecosystem builders shaping the future of decentralized technology.",
+      "startDate": "2025-09-18",
+      "endDate": "2025-09-19",
+      "location": "Base Milano, Via Bergognone 34",
+      "city": "Milan",
+      "country": "Italy",
+      "timezone": "Europe/Rome",
+      "websiteUrl": "https://ethmilan.xyz",
+      "status": "published",
+      "branding": {
+        "primaryColor": "#6366f1",
+        "accentColor": "#f59e0b",
+        "backgroundColor": "#0f0f1a",
+        "textColor": "#f8f9fa",
+        "heroImageUrl": "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=1200",
+        "logoUrl": "/demo/ethmilan-logo.svg"
+      },
+      "stats": {
+        "expectedAttendees": 800,
+        "onlineReach": 15000,
+        "mediaReach": 50000,
+        "newsletterSubs": 8500,
+        "socialFollowers": { "twitter": 12000, "linkedin": 4500, "farcaster": 3200 },
+        "internationalPct": 60,
+        "audienceProfile": "Ethereum developers (45%), DeFi/protocol founders (20%), investors & VCs (15%), ecosystem builders (10%), media (10%)",
+        "topicTags": ["Ethereum", "DeFi", "L2s", "ZK", "NFT", "DAOs", "Web3"],
+        "previousEditions": 2,
+        "sponsorsLastEdition": 18
+      },
+      "items": [
+        {
+          "slug": "title-sponsor",
+          "publicTitle": "Title Sponsor",
+          "shortDescription": "Maximum visibility. Own the ETHMilan 2025 name, stage, and narrative.",
+          "longDescription": "The Title Sponsor receives exclusive \"Presented by\" co-branding across all ETHMilan channels, the opening keynote slot, the largest booth on the event floor, and premiere logo placement everywhere from the venue entrance to livestream overlays.",
+          "category": "title_sponsorship",
+          "mode": "sealed_bid",
+          "listPrice": 50000,
+          "minimumBid": 40000,
+          "maximumBid": 65000,
+          "bidAllowed": true,
+          "quantityTotal": 1,
+          "isExclusive": true,
+          "featured": true,
+          "packageTier": "title",
+          "sortOrder": 0,
+          "benefits": [
+            { "type": "stage_access",        "label": "Stage Access",          "value": "Keynote slot (30 min)",                     "sortOrder": 1 },
+            { "type": "booth_size",          "label": "Booth Size",            "value": "6×6m premium corner booth",                 "sortOrder": 2 },
+            { "type": "logo_placement",      "label": "Logo Placement",        "value": "Top of all materials — \"Presented by\"",   "sortOrder": 3 },
+            { "type": "website_visibility",  "label": "Website",               "value": "Hero placement + dedicated sponsor page",   "sortOrder": 4 },
+            { "type": "social_mentions",     "label": "Social Mentions",       "value": "10+ posts across all channels",             "sortOrder": 5 },
+            { "type": "newsletter_mentions", "label": "Newsletter Mentions",   "value": "4 issues (pre, during, post)",              "sortOrder": 6 },
+            { "type": "pass_count",          "label": "Passes",                "quantity": 10,                                       "sortOrder": 7 },
+            { "type": "custom",              "label": "MC Mentions",           "value": "All stage transitions",                     "sortOrder": 8 }
+          ]
+        },
+        {
+          "slug": "premium-sponsor",
+          "publicTitle": "Premium Sponsor",
+          "shortDescription": "Major stage presence, prominent booth, and deep audience engagement.",
+          "longDescription": "The Premium sponsorship package gives your brand a main stage panel slot, a 4×4m booth in the prime networking area, and prominent placement across all digital and physical channels throughout the event.",
+          "category": "sponsor_pack",
+          "mode": "fixed_price",
+          "listPrice": 30000,
+          "quantityTotal": 3,
+          "featured": true,
+          "packageTier": "premium",
+          "sortOrder": 1,
+          "benefits": [
+            { "type": "stage_access",        "label": "Stage Access",        "value": "Panel slot (45 min)",              "sortOrder": 1 },
+            { "type": "booth_size",          "label": "Booth Size",          "value": "4×4m booth",                      "sortOrder": 2 },
+            { "type": "logo_placement",      "label": "Logo Placement",      "value": "Top tier — all print and digital","sortOrder": 3 },
+            { "type": "website_visibility",  "label": "Website",             "value": "Homepage + program page",          "sortOrder": 4 },
+            { "type": "social_mentions",     "label": "Social Mentions",     "value": "5+ posts",                         "sortOrder": 5 },
+            { "type": "newsletter_mentions", "label": "Newsletter Mentions", "value": "2 issues",                         "sortOrder": 6 },
+            { "type": "pass_count",          "label": "Passes",              "quantity": 6,                               "sortOrder": 7 }
+          ]
+        },
+        {
+          "slug": "silver-sponsor",
+          "publicTitle": "Silver Sponsor",
+          "shortDescription": "Strong brand visibility and networking access at a mid-tier investment.",
+          "longDescription": "Silver sponsorship delivers solid brand exposure through logo placements, a 3×2m booth, a speaking lightning talk, and digital mentions — ideal for protocols and teams looking to build awareness in the European Ethereum community.",
+          "category": "sponsor_pack",
+          "mode": "hybrid",
+          "listPrice": 20000,
+          "minimumBid": 15000,
+          "bidAllowed": true,
+          "quantityTotal": 5,
+          "packageTier": "silver",
+          "sortOrder": 2,
+          "benefits": [
+            { "type": "stage_access",        "label": "Stage Access",        "value": "Lightning talk (10 min)", "sortOrder": 1 },
+            { "type": "booth_size",          "label": "Booth Size",          "value": "3×2m booth",             "sortOrder": 2 },
+            { "type": "logo_placement",      "label": "Logo Placement",      "value": "Second tier",            "sortOrder": 3 },
+            { "type": "website_visibility",  "label": "Website",             "value": "Program page",           "sortOrder": 4 },
+            { "type": "social_mentions",     "label": "Social Mentions",     "value": "3 posts",                "sortOrder": 5 },
+            { "type": "newsletter_mentions", "label": "Newsletter Mentions", "value": "1 issue",                "sortOrder": 6 },
+            { "type": "pass_count",          "label": "Passes",              "quantity": 4,                     "sortOrder": 7 }
+          ]
+        },
+        {
+          "slug": "community-sponsor",
+          "publicTitle": "Community Sponsor",
+          "shortDescription": "Entry-level brand presence — perfect for ecosystem projects and DAOs.",
+          "longDescription": "Community sponsorship is designed for smaller teams, ecosystems, and DAOs who want to show up at ETHMilan without the full-booth commitment. You get logo presence, digital mentions, and attendee passes.",
+          "category": "sponsor_pack",
+          "mode": "fixed_price",
+          "listPrice": 10000,
+          "quantityTotal": 10,
+          "packageTier": "community",
+          "sortOrder": 3,
+          "benefits": [
+            { "type": "logo_placement",     "label": "Logo Placement",  "value": "Third tier",    "sortOrder": 1 },
+            { "type": "website_visibility", "label": "Website",         "value": "Sponsors page", "sortOrder": 2 },
+            { "type": "social_mentions",    "label": "Social Mentions", "value": "1 mention",     "sortOrder": 3 },
+            { "type": "pass_count",         "label": "Passes",          "quantity": 2,            "sortOrder": 4 }
+          ]
+        },
+        {
+          "slug": "coffee-sponsor",
+          "publicTitle": "Coffee Station Sponsor",
+          "shortDescription": "Brand the coffee station serving 800 attendees all day.",
+          "category": "food_beverage",
+          "mode": "fixed_price",
+          "listPrice": 5000,
+          "quantityTotal": 2,
+          "sortOrder": 10,
+          "benefits": [
+            { "type": "custom",     "label": "Logo on coffee station", "value": "Full wrap",   "sortOrder": 1 },
+            { "type": "custom",     "label": "Branded cups",           "value": "1000 units",  "sortOrder": 2 },
+            { "type": "pass_count", "label": "Passes",                 "quantity": 1,          "sortOrder": 3 }
+          ]
+        },
+        {
+          "slug": "lunch-sponsor",
+          "publicTitle": "Lunch Sponsor",
+          "shortDescription": "Sponsor the networking lunch for 800 attendees — maximum dwell time.",
+          "category": "food_beverage",
+          "mode": "hybrid",
+          "listPrice": 12000,
+          "minimumBid": 9000,
+          "bidAllowed": true,
+          "quantityTotal": 1,
+          "isExclusive": true,
+          "sortOrder": 11,
+          "benefits": [
+            { "type": "custom",          "label": "Branded serving area", "value": "Full signage",           "sortOrder": 1 },
+            { "type": "custom",          "label": "MC announcement",      "value": "Before and after lunch", "sortOrder": 2 },
+            { "type": "social_mentions", "label": "Social Mentions",      "value": "2 posts",                "sortOrder": 3 },
+            { "type": "pass_count",      "label": "Passes",               "quantity": 2,                     "sortOrder": 4 }
+          ]
+        },
+        {
+          "slug": "badge-sponsor",
+          "publicTitle": "Badge / Lanyard Sponsor",
+          "shortDescription": "Your logo on every attendee badge and lanyard for maximum impressions.",
+          "category": "badge",
+          "mode": "fixed_price",
+          "listPrice": 7500,
+          "quantityTotal": 1,
+          "isExclusive": true,
+          "sortOrder": 12,
+          "benefits": [
+            { "type": "custom",     "label": "Badge logo placement", "value": "Front center",    "sortOrder": 1 },
+            { "type": "custom",     "label": "Lanyard branding",     "value": "Full wrap print", "sortOrder": 2 },
+            { "type": "pass_count", "label": "Passes",               "quantity": 1,              "sortOrder": 3 }
+          ]
+        },
+        {
+          "slug": "side-stage-branding",
+          "publicTitle": "Side Stage Branding Package",
+          "shortDescription": "Brand the secondary stage used for workshops and breakout sessions.",
+          "category": "stage",
+          "mode": "fixed_price",
+          "listPrice": 8000,
+          "quantityTotal": 1,
+          "isExclusive": true,
+          "sortOrder": 13,
+          "benefits": [
+            { "type": "stage_access", "label": "Stage Naming Rights",    "value": "\"[Brand] Stage\"", "sortOrder": 1 },
+            { "type": "custom",       "label": "Stage backdrop branding", "value": "Full width",       "sortOrder": 2 },
+            { "type": "custom",       "label": "Standing banner × 2",                                  "sortOrder": 3 },
+            { "type": "pass_count",   "label": "Passes",                 "quantity": 2,                "sortOrder": 4 }
+          ]
+        },
+        {
+          "slug": "screen-pack",
+          "publicTitle": "Screen & Digital Ads Pack",
+          "shortDescription": "Rotating brand ads on all venue screens during breaks and transitions.",
+          "category": "ad_placement",
+          "mode": "fixed_price",
+          "listPrice": 4500,
+          "quantityTotal": 4,
+          "sortOrder": 14,
+          "benefits": [
+            { "type": "custom", "label": "Screen slots", "value": "30s looping ad on all venue screens", "sortOrder": 1 },
+            { "type": "custom", "label": "Frequency",    "value": "Every 5 min during breaks",           "sortOrder": 2 }
+          ]
+        },
+        {
+          "slug": "newsletter-sponsor",
+          "publicTitle": "Newsletter Sponsor",
+          "shortDescription": "Dedicated sponsor section in the ETHMilan newsletter (8,500 subs).",
+          "category": "media",
+          "mode": "fixed_price",
+          "listPrice": 3000,
+          "quantityTotal": 6,
+          "sortOrder": 15,
+          "benefits": [
+            { "type": "newsletter_mentions", "label": "Newsletter placement", "value": "Full sponsor section", "sortOrder": 1 },
+            { "type": "custom",              "label": "Subscribers",          "value": "8,500+",               "sortOrder": 2 }
+          ]
+        },
+        {
+          "slug": "custom-package",
+          "publicTitle": "Custom Package",
+          "shortDescription": "Design a package that fits your goals. Tell us what you need.",
+          "category": "custom",
+          "mode": "request_only",
+          "onRequest": true,
+          "sortOrder": 99,
+          "benefits": []
+        }
+      ]
+    },
+
+    {
+      "slug": "ethmilan-2026",
+      "name": "ETHMilan 2026",
+      "tagline": "Southern Europe's Flagship Ethereum Summit Returns",
+      "description": "ETHMilan 2026 builds on the success of 2025 with a larger venue, 1,200+ attendees, and an expanded programme spanning three tracks: core protocol, DeFi & RWA, and consumer applications. Three days of talks, workshops, and the best networking in Southern Europe.",
+      "startDate": "2026-09-24",
+      "endDate": "2026-09-26",
+      "location": "Superstudio Più, Via Tortona 27",
+      "city": "Milan",
+      "country": "Italy",
+      "timezone": "Europe/Rome",
+      "websiteUrl": "https://ethmilan.xyz",
+      "branding": {
+        "primaryColor": "#6366f1",
+        "accentColor": "#f59e0b",
+        "backgroundColor": "#0f0f1a",
+        "textColor": "#f8f9fa",
+        "heroImageUrl": "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=1200"
+      },
+      "stats": { "expectedAttendees": 1200, "onlineReach": 25000, "internationalPct": 55 },
+      "items": [
+        {
+          "slug": "title-sponsor",
+          "publicTitle": "Title Sponsor",
+          "shortDescription": "\"Presented by\" co-branding across the entire event — exclusive, one slot.",
+          "category": "title_sponsorship", "mode": "sealed_bid",
+          "listPrice": 75000, "minimumBid": 60000, "bidAllowed": true,
+          "quantityTotal": 1, "isExclusive": true, "featured": true, "packageTier": "title", "sortOrder": 0,
+          "benefits": [
+            { "type": "stage_access",    "label": "Stage Access", "value": "Opening keynote (45 min)",       "sortOrder": 1 },
+            { "type": "booth_size",      "label": "Booth",        "value": "8×8m corner booth",             "sortOrder": 2 },
+            { "type": "logo_placement",  "label": "Logo",         "value": "\"Presented by\" — all channels","sortOrder": 3 },
+            { "type": "pass_count",      "label": "Passes",       "quantity": 15,                            "sortOrder": 4 },
+            { "type": "social_mentions", "label": "Social",       "value": "15+ posts",                      "sortOrder": 5 }
+          ]
+        },
+        {
+          "slug": "platinum-sponsor",
+          "publicTitle": "Platinum Sponsor",
+          "shortDescription": "Top-tier presence: main stage panel, 6×4m booth, and premier digital placement.",
+          "category": "sponsor_pack", "mode": "fixed_price",
+          "listPrice": 45000, "quantityTotal": 2, "featured": true, "packageTier": "platinum", "sortOrder": 1,
+          "benefits": [
+            { "type": "stage_access",   "label": "Stage Access", "value": "Main stage panel (30 min)",      "sortOrder": 1 },
+            { "type": "booth_size",     "label": "Booth",        "value": "6×4m",                           "sortOrder": 2 },
+            { "type": "logo_placement", "label": "Logo",         "value": "First tier — all placements",    "sortOrder": 3 },
+            { "type": "pass_count",     "label": "Passes",       "quantity": 10,                            "sortOrder": 4 },
+            { "type": "social_mentions","label": "Social",       "value": "8 posts",                        "sortOrder": 5 }
+          ]
+        },
+        {
+          "slug": "gold-sponsor",
+          "publicTitle": "Gold Sponsor",
+          "shortDescription": "Strong stage presence with a 4×4m booth and side stage talk.",
+          "category": "sponsor_pack", "mode": "fixed_price",
+          "listPrice": 30000, "quantityTotal": 4, "featured": true, "packageTier": "gold", "sortOrder": 2,
+          "benefits": [
+            { "type": "stage_access",   "label": "Stage Access", "value": "Side stage talk (20 min)", "sortOrder": 1 },
+            { "type": "booth_size",     "label": "Booth",        "value": "4×4m",                    "sortOrder": 2 },
+            { "type": "logo_placement", "label": "Logo",         "value": "Second tier",             "sortOrder": 3 },
+            { "type": "pass_count",     "label": "Passes",       "quantity": 6,                      "sortOrder": 4 }
+          ]
+        },
+        {
+          "slug": "silver-sponsor",
+          "publicTitle": "Silver Sponsor",
+          "shortDescription": "Solid brand visibility with 3×2m booth and lightning talk.",
+          "category": "sponsor_pack", "mode": "hybrid",
+          "listPrice": 18000, "minimumBid": 14000, "bidAllowed": true,
+          "quantityTotal": 8, "packageTier": "silver", "sortOrder": 3,
+          "benefits": [
+            { "type": "stage_access",   "label": "Stage Access", "value": "Lightning talk (10 min)", "sortOrder": 1 },
+            { "type": "booth_size",     "label": "Booth",        "value": "3×2m",                   "sortOrder": 2 },
+            { "type": "logo_placement", "label": "Logo",         "value": "Third tier",             "sortOrder": 3 },
+            { "type": "pass_count",     "label": "Passes",       "quantity": 4,                     "sortOrder": 4 }
+          ]
+        },
+        {
+          "slug": "community-sponsor",
+          "publicTitle": "Community Sponsor",
+          "shortDescription": "Entry-level visibility — ideal for DAOs, protocols, and ecosystem projects.",
+          "category": "sponsor_pack", "mode": "fixed_price",
+          "listPrice": 8000, "quantityTotal": 15, "packageTier": "community", "sortOrder": 4,
+          "benefits": [
+            { "type": "logo_placement", "label": "Logo",   "value": "Fourth tier", "sortOrder": 1 },
+            { "type": "pass_count",     "label": "Passes", "quantity": 2,          "sortOrder": 2 }
+          ]
+        },
+        {
+          "slug": "hackathon-sponsor",
+          "publicTitle": "Hackathon Track Sponsor",
+          "shortDescription": "Name and fund one of the ETHMilan 2026 hackathon tracks.",
+          "category": "hackathon", "mode": "fixed_price",
+          "listPrice": 20000, "quantityTotal": 3, "sortOrder": 5,
+          "benefits": [
+            { "type": "custom",       "label": "Track naming rights", "value": "\"[Brand] Track\"",          "sortOrder": 1 },
+            { "type": "custom",       "label": "Prize pool",          "value": "You define it — minimum $5,000","sortOrder": 2 },
+            { "type": "stage_access", "label": "Demo day judging",    "value": "Keynote slot at closing",    "sortOrder": 3 },
+            { "type": "pass_count",   "label": "Passes",              "quantity": 5,                         "sortOrder": 4 }
+          ]
+        },
+        {
+          "slug": "badge-sponsor",
+          "publicTitle": "Badge & Lanyard Sponsor",
+          "shortDescription": "Your logo on every badge and lanyard worn by 1,200 attendees.",
+          "category": "badge", "mode": "fixed_price",
+          "listPrice": 9000, "quantityTotal": 1, "isExclusive": true, "sortOrder": 10,
+          "benefits": [
+            { "type": "custom",     "label": "Badge logo",       "value": "Front center",    "sortOrder": 1 },
+            { "type": "custom",     "label": "Lanyard branding", "value": "Full wrap print", "sortOrder": 2 },
+            { "type": "pass_count", "label": "Passes",           "quantity": 2,              "sortOrder": 3 }
+          ]
+        },
+        {
+          "slug": "afterparty-sponsor",
+          "publicTitle": "After-Party Sponsor",
+          "shortDescription": "Headline the official ETHMilan 2026 after-party (300 guests, invite-only).",
+          "category": "experience", "mode": "sealed_bid",
+          "listPrice": 25000, "minimumBid": 20000, "bidAllowed": true,
+          "quantityTotal": 1, "isExclusive": true, "featured": true, "sortOrder": 6,
+          "benefits": [
+            { "type": "custom",          "label": "Venue branding",    "value": "Naming rights + full decor",    "sortOrder": 1 },
+            { "type": "custom",          "label": "MC introduction",   "value": "CEO/founder welcome speech",    "sortOrder": 2 },
+            { "type": "pass_count",      "label": "VIP passes",        "quantity": 20,                           "sortOrder": 3 },
+            { "type": "social_mentions", "label": "Social",            "value": "5 posts + event recap",         "sortOrder": 4 }
+          ]
+        }
+      ]
+    },
+
+    {
+      "slug": "ethberlin-2026",
+      "name": "ETHBerlin 2026",
+      "tagline": "Where Cypherpunks Ship",
+      "description": "ETHBerlin returns to the OHM venue for its sixth edition. Focused on privacy, decentralisation, and open-source values — ETHBerlin is the most hacker-centric Ethereum conference in Europe. Expect 900 developers, no suits, and 48 hours of building.",
+      "startDate": "2026-05-08",
+      "endDate": "2026-05-10",
+      "location": "OHM, Am Postbahnhof 1",
+      "city": "Berlin",
+      "country": "Germany",
+      "timezone": "Europe/Berlin",
+      "websiteUrl": "https://ethberlin.org",
+      "branding": {
+        "primaryColor": "#10b981",
+        "accentColor": "#6366f1",
+        "backgroundColor": "#0f0f1a",
+        "textColor": "#f8f9fa",
+        "heroImageUrl": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200"
+      },
+      "stats": { "expectedAttendees": 900, "onlineReach": 20000, "internationalPct": 55 },
+      "items": [
+        {
+          "slug": "lead-hacker-sponsor",
+          "publicTitle": "Lead Hacker Sponsor",
+          "shortDescription": "Top billing at the most hacker-focused Ethereum conference in Europe.",
+          "category": "title_sponsorship", "mode": "sealed_bid",
+          "listPrice": 60000, "minimumBid": 45000, "bidAllowed": true,
+          "quantityTotal": 1, "isExclusive": true, "featured": true, "packageTier": "title", "sortOrder": 0,
+          "benefits": [
+            { "type": "custom",       "label": "\"Powered by\" branding",  "value": "All venues and digital channels", "sortOrder": 1 },
+            { "type": "stage_access", "label": "Stage Access",             "value": "Keynote (30 min)",               "sortOrder": 2 },
+            { "type": "custom",       "label": "Hackathon bounty banner",  "value": "Featured across hacker hall",    "sortOrder": 3 },
+            { "type": "pass_count",   "label": "Passes",                   "quantity": 12,                            "sortOrder": 4 }
+          ]
+        },
+        {
+          "slug": "bounty-sponsor-large",
+          "publicTitle": "Bounty Sponsor — Large",
+          "shortDescription": "Post $20K+ in bounties and have your challenges featured prominently at the hackathon.",
+          "category": "hackathon", "mode": "request_only",
+          "onRequest": true, "quantityTotal": 5, "sortOrder": 1,
+          "benefits": [
+            { "type": "custom",       "label": "Bounty listing",      "value": "Featured front-and-centre",  "sortOrder": 1 },
+            { "type": "stage_access", "label": "Stage time",          "value": "Bounty intro pitch (5 min)", "sortOrder": 2 },
+            { "type": "custom",       "label": "Judging panel seat",                                         "sortOrder": 3 },
+            { "type": "pass_count",   "label": "Passes",              "quantity": 4,                         "sortOrder": 4 }
+          ]
+        },
+        {
+          "slug": "bounty-sponsor-small",
+          "publicTitle": "Bounty Sponsor — Standard",
+          "shortDescription": "Post $5K–20K in bounties and reach ETHBerlin's builder-first audience.",
+          "category": "hackathon", "mode": "fixed_price",
+          "listPrice": 8000, "quantityTotal": 10, "sortOrder": 2,
+          "benefits": [
+            { "type": "custom",     "label": "Bounty listing",               "sortOrder": 1 },
+            { "type": "custom",     "label": "Bounty table in hacker hall",  "sortOrder": 2 },
+            { "type": "pass_count", "label": "Passes",                       "quantity": 2, "sortOrder": 3 }
+          ]
+        },
+        {
+          "slug": "infrastructure-sponsor",
+          "publicTitle": "Infrastructure Sponsor",
+          "shortDescription": "Power the build — provide cloud credits, RPC endpoints, or dev tooling to 900 hackers.",
+          "category": "in_kind", "mode": "request_only",
+          "onRequest": true, "sortOrder": 3,
+          "benefits": [
+            { "type": "logo_placement", "label": "Logo",              "value": "On hacker welcome kit and portal", "sortOrder": 1 },
+            { "type": "custom",         "label": "Integration talk",  "value": "Workshop slot (45 min)",           "sortOrder": 2 },
+            { "type": "pass_count",     "label": "Passes",            "quantity": 4,                               "sortOrder": 3 }
+          ]
+        },
+        {
+          "slug": "community-sponsor",
+          "publicTitle": "Community Sponsor",
+          "shortDescription": "Logo placement, a table at the networking area, and hacker passes.",
+          "category": "sponsor_pack", "mode": "fixed_price",
+          "listPrice": 12000, "quantityTotal": 8, "packageTier": "community", "sortOrder": 4,
+          "benefits": [
+            { "type": "logo_placement", "label": "Logo",              "value": "Event materials + website", "sortOrder": 1 },
+            { "type": "custom",         "label": "Networking table",  "value": "Hacker floor area",         "sortOrder": 2 },
+            { "type": "pass_count",     "label": "Passes",            "quantity": 3,                        "sortOrder": 3 }
+          ]
+        },
+        {
+          "slug": "food-sponsor",
+          "publicTitle": "Hacker Fuel Sponsor",
+          "shortDescription": "Keep 900 hackers energised — sponsor all meals and snacks across three days.",
+          "category": "food_beverage", "mode": "hybrid",
+          "listPrice": 18000, "minimumBid": 14000, "bidAllowed": true,
+          "quantityTotal": 1, "isExclusive": true, "sortOrder": 5,
+          "benefits": [
+            { "type": "custom",     "label": "Branded serving area",  "sortOrder": 1 },
+            { "type": "custom",     "label": "MC acknowledgment",     "value": "Every meal announcement", "sortOrder": 2 },
+            { "type": "pass_count", "label": "Passes",                "quantity": 3,                      "sortOrder": 3 }
+          ]
+        }
+      ]
+    },
+
+    {
+      "slug": "devconnect-amsterdam-2026",
+      "name": "DevConnect Amsterdam 2026",
+      "tagline": "A Week of Ethereum Deep Dives",
+      "description": "DevConnect is a week-long gathering of Ethereum developers, researchers, and builders split across independent co-located events. Amsterdam hosts the 2026 edition — 2,000+ attendees, 20+ events across the city, and unprecedented access to the people shaping the protocol.",
+      "startDate": "2026-11-09",
+      "endDate": "2026-11-15",
+      "location": "Multiple venues across Amsterdam",
+      "city": "Amsterdam",
+      "country": "Netherlands",
+      "timezone": "Europe/Amsterdam",
+      "websiteUrl": "https://devconnect.org",
+      "branding": {
+        "primaryColor": "#8b5cf6",
+        "accentColor": "#f97316",
+        "backgroundColor": "#0f0f1a",
+        "textColor": "#f8f9fa",
+        "heroImageUrl": "https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?w=1200"
+      },
+      "stats": { "expectedAttendees": 2000, "onlineReach": 50000, "internationalPct": 55 },
+      "items": [
+        {
+          "slug": "week-lead-sponsor",
+          "publicTitle": "Week Lead Sponsor",
+          "shortDescription": "Headline sponsor of the entire DevConnect Amsterdam week — maximum reach across all events.",
+          "category": "title_sponsorship", "mode": "sealed_bid",
+          "listPrice": 100000, "minimumBid": 80000, "bidAllowed": true,
+          "quantityTotal": 1, "isExclusive": true, "featured": true, "packageTier": "title", "sortOrder": 0,
+          "benefits": [
+            { "type": "logo_placement",  "label": "Logo",         "value": "\"Presented by\" — all week materials",     "sortOrder": 1 },
+            { "type": "stage_access",    "label": "Stage Access", "value": "Opening plenary keynote (30 min)",          "sortOrder": 2 },
+            { "type": "custom",          "label": "Branded lounge","value": "Dedicated sponsor lounge for the week",    "sortOrder": 3 },
+            { "type": "pass_count",      "label": "Passes",       "quantity": 20,                                       "sortOrder": 4 },
+            { "type": "social_mentions", "label": "Social",       "value": "20+ posts across all channels",            "sortOrder": 5 }
+          ]
+        },
+        {
+          "slug": "track-sponsor",
+          "publicTitle": "Track Sponsor",
+          "shortDescription": "Sponsor one of the five thematic co-located events and own that topic.",
+          "category": "sponsor_pack", "mode": "fixed_price",
+          "listPrice": 40000, "quantityTotal": 5, "featured": true, "packageTier": "premium", "sortOrder": 1,
+          "benefits": [
+            { "type": "custom",         "label": "Track naming rights", "value": "\"[Brand] Day\"",       "sortOrder": 1 },
+            { "type": "stage_access",   "label": "Stage Access",        "value": "Track keynote (30 min)","sortOrder": 2 },
+            { "type": "logo_placement", "label": "Logo",                "value": "Top of track materials", "sortOrder": 3 },
+            { "type": "pass_count",     "label": "Passes",              "quantity": 8,                    "sortOrder": 4 }
+          ]
+        },
+        {
+          "slug": "networking-sponsor",
+          "publicTitle": "Networking Event Sponsor",
+          "shortDescription": "Host one of the official DevConnect networking nights for 400+ attendees.",
+          "category": "experience", "mode": "hybrid",
+          "listPrice": 30000, "minimumBid": 25000, "bidAllowed": true,
+          "quantityTotal": 3, "sortOrder": 2,
+          "benefits": [
+            { "type": "custom",       "label": "Venue branding", "value": "Full naming rights",       "sortOrder": 1 },
+            { "type": "stage_access", "label": "Stage Access",   "value": "Welcome remarks (10 min)", "sortOrder": 2 },
+            { "type": "pass_count",   "label": "Passes",         "quantity": 10,                      "sortOrder": 3 }
+          ]
+        },
+        {
+          "slug": "research-sponsor",
+          "publicTitle": "Research Day Sponsor",
+          "shortDescription": "Co-present the Ethereum research programme with EF researchers and academics.",
+          "category": "sponsor_pack", "mode": "fixed_price",
+          "listPrice": 25000, "quantityTotal": 2, "sortOrder": 3,
+          "benefits": [
+            { "type": "stage_access",   "label": "Stage Access", "value": "Research panel slot (20 min)", "sortOrder": 1 },
+            { "type": "logo_placement", "label": "Logo",         "value": "Research Day programme",       "sortOrder": 2 },
+            { "type": "pass_count",     "label": "Passes",       "quantity": 5,                           "sortOrder": 3 }
+          ]
+        },
+        {
+          "slug": "community-sponsor",
+          "publicTitle": "Community Sponsor",
+          "shortDescription": "Visibility across the DevConnect week for smaller teams and protocols.",
+          "category": "sponsor_pack", "mode": "fixed_price",
+          "listPrice": 15000, "quantityTotal": 20, "packageTier": "community", "sortOrder": 4,
+          "benefits": [
+            { "type": "logo_placement", "label": "Logo",   "value": "Week programme and website", "sortOrder": 1 },
+            { "type": "pass_count",     "label": "Passes", "quantity": 3,                         "sortOrder": 2 }
+          ]
+        },
+        {
+          "slug": "childcare-sponsor",
+          "publicTitle": "Childcare & Inclusion Sponsor",
+          "shortDescription": "Fund on-site childcare so parents can attend — a stand-out values statement.",
+          "category": "inclusion", "mode": "fixed_price",
+          "listPrice": 10000, "quantityTotal": 2, "sortOrder": 10,
+          "benefits": [
+            { "type": "custom",     "label": "Dedicated acknowledgment", "value": "Stage shoutout + website feature", "sortOrder": 1 },
+            { "type": "pass_count", "label": "Passes",                   "quantity": 2,                              "sortOrder": 2 }
+          ]
+        }
+      ]
+    },
+
+    {
+      "slug": "ethlisbon-2026",
+      "name": "ETHLisbon 2026",
+      "tagline": "The Atlantic Gateway to Ethereum",
+      "description": "ETHLisbon 2026 brings 600 builders, investors, and creators to Lisbon's LX Factory for two days of talks, workshops, and side events. Known for its warm culture and thriving startup scene, Lisbon is one of Web3's favourite European hubs.",
+      "startDate": "2026-10-15",
+      "endDate": "2026-10-16",
+      "location": "LX Factory, Rua Rodrigues de Faria 103",
+      "city": "Lisbon",
+      "country": "Portugal",
+      "timezone": "Europe/Lisbon",
+      "websiteUrl": "https://ethlisbon.org",
+      "branding": {
+        "primaryColor": "#ef4444",
+        "accentColor": "#f59e0b",
+        "backgroundColor": "#0f0f1a",
+        "textColor": "#f8f9fa",
+        "heroImageUrl": "https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=1200"
+      },
+      "stats": { "expectedAttendees": 600, "onlineReach": 12000, "internationalPct": 55 },
+      "items": [
+        {
+          "slug": "headline-sponsor",
+          "publicTitle": "Headline Sponsor",
+          "shortDescription": "Exclusive co-branding across ETHLisbon — 600 attendees, one partner.",
+          "category": "title_sponsorship", "mode": "sealed_bid",
+          "listPrice": 40000, "minimumBid": 30000, "bidAllowed": true,
+          "quantityTotal": 1, "isExclusive": true, "featured": true, "packageTier": "title", "sortOrder": 0,
+          "benefits": [
+            { "type": "stage_access",   "label": "Keynote",       "value": "30 minutes on main stage",   "sortOrder": 1 },
+            { "type": "booth_size",     "label": "Booth",         "value": "5×5m feature booth",         "sortOrder": 2 },
+            { "type": "logo_placement", "label": "Logo",          "value": "\"Presented by\" all channels","sortOrder": 3 },
+            { "type": "pass_count",     "label": "Passes",        "quantity": 8,                         "sortOrder": 4 }
+          ]
+        },
+        {
+          "slug": "gold-sponsor",
+          "publicTitle": "Gold Sponsor",
+          "shortDescription": "Stage access, 4×3m booth, and strong digital presence.",
+          "category": "sponsor_pack", "mode": "fixed_price",
+          "listPrice": 20000, "quantityTotal": 3, "featured": true, "packageTier": "gold", "sortOrder": 1,
+          "benefits": [
+            { "type": "stage_access",   "label": "Stage", "value": "Panel slot (20 min)", "sortOrder": 1 },
+            { "type": "booth_size",     "label": "Booth", "value": "4×3m",               "sortOrder": 2 },
+            { "type": "logo_placement", "label": "Logo",  "value": "First tier",         "sortOrder": 3 },
+            { "type": "pass_count",     "label": "Passes","quantity": 5,                 "sortOrder": 4 }
+          ]
+        },
+        {
+          "slug": "silver-sponsor",
+          "publicTitle": "Silver Sponsor",
+          "shortDescription": "A 3×2m booth, a lightning talk, and growing presence in the Iberian Web3 scene.",
+          "category": "sponsor_pack", "mode": "hybrid",
+          "listPrice": 12000, "minimumBid": 9000, "bidAllowed": true,
+          "quantityTotal": 5, "packageTier": "silver", "sortOrder": 2,
+          "benefits": [
+            { "type": "stage_access", "label": "Stage",  "value": "Lightning talk (8 min)", "sortOrder": 1 },
+            { "type": "booth_size",   "label": "Booth",  "value": "3×2m",                  "sortOrder": 2 },
+            { "type": "pass_count",   "label": "Passes", "quantity": 3,                    "sortOrder": 3 }
+          ]
+        },
+        {
+          "slug": "community-sponsor",
+          "publicTitle": "Community Sponsor",
+          "shortDescription": "Entry-level visibility for DAOs, ecosystems, and early-stage projects.",
+          "category": "sponsor_pack", "mode": "fixed_price",
+          "listPrice": 6000, "quantityTotal": 10, "packageTier": "community", "sortOrder": 3,
+          "benefits": [
+            { "type": "logo_placement", "label": "Logo",   "value": "Website and programme", "sortOrder": 1 },
+            { "type": "pass_count",     "label": "Passes", "quantity": 2,                   "sortOrder": 2 }
+          ]
+        },
+        {
+          "slug": "workshop-sponsor",
+          "publicTitle": "Workshop Room Sponsor",
+          "shortDescription": "Name and run a 90-minute hands-on workshop for 60 developers.",
+          "category": "stage", "mode": "fixed_price",
+          "listPrice": 8000, "quantityTotal": 4, "sortOrder": 4,
+          "benefits": [
+            { "type": "custom",       "label": "Workshop room naming", "value": "\"[Brand] Workshop\"",   "sortOrder": 1 },
+            { "type": "stage_access", "label": "Workshop slot",        "value": "90 min, 60-seat room",   "sortOrder": 2 },
+            { "type": "pass_count",   "label": "Passes",               "quantity": 2,                    "sortOrder": 3 }
+          ]
+        },
+        {
+          "slug": "azulejos-dinner",
+          "publicTitle": "Speakers' Dinner Sponsor",
+          "shortDescription": "Host 60 speakers and VIPs at a private dinner in a traditional Lisbon restaurant.",
+          "category": "experience", "mode": "fixed_price",
+          "listPrice": 15000, "quantityTotal": 1, "isExclusive": true, "sortOrder": 5,
+          "benefits": [
+            { "type": "custom",     "label": "Venue branding",    "value": "Dinner naming rights", "sortOrder": 1 },
+            { "type": "custom",     "label": "Guest list control","value": "5 seats of your choice","sortOrder": 2 },
+            { "type": "pass_count", "label": "Passes",            "quantity": 5,                   "sortOrder": 3 }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "crowdfundCampaigns": [
+    {
+      "id": "demo-campaign-community-a",
+      "event": "ethmilan-2025",
+      "item": "community-sponsor",
+      "entityName": "Ethereum Barcelona",
+      "entityDescription": "The largest Spanish-speaking Ethereum community with 2,000+ members across Barcelona, Madrid, and Valencia. We run monthly meetups and a yearly hackathon. Sponsoring ETHMilan would let us bring 20 developers to the event and grow our cross-border presence in Southern Europe.",
+      "entityWebsite": "https://ethereumbarcelona.com",
+      "contactName": "Marta Vilanova",
+      "contactEmail": "marta@ethereumbarcelona.com",
+      "goalAmount": 10000,
+      "raisedAmount": 6750,
+      "currency": "USD",
+      "status": "active",
+      "contributions": [
+        { "name": "Pablo Ruiz",      "email": "pablo@defi.es",        "amount": 1000, "message": "Proud to back the Barcelona community!", "daysAgo": 6 },
+        { "name": "Sofía Méndez",   "email": "sofia@web3.cat",        "amount": 500,  "message": "ETH BCN represents 🇪🇸",                 "daysAgo": 5 },
+        { "name": "Anonymous",       "email": "anon1@pm.me",          "amount": 2000,                                                     "daysAgo": 4 },
+        { "name": "Carlos Ibáñez",  "email": "carlos@protocol.xyz",   "amount": 750,  "message": "Keep building!",                        "daysAgo": 3 },
+        { "name": "Laura Torres",    "email": "laura@dao.eth",         "amount": 500,                                                     "daysAgo": 2 },
+        { "name": "Enric Puig",      "email": "enric@blockcat.io",     "amount": 1000, "message": "Representing Catalonia at ETHMilan 🔥", "daysAgo": 1 },
+        { "name": "Noa Ferrer",      "email": "noa@zk.dev",            "amount": 500,                                                     "daysAgo": 0 },
+        { "name": "Miquel Sala",     "email": "miquel@l2.xyz",         "amount": 500,                                                     "daysAgo": 0 }
+      ]
+    },
+    {
+      "id": "demo-campaign-community-b",
+      "event": "ethmilan-2025",
+      "item": "community-sponsor",
+      "entityName": "DeFi Rome",
+      "entityDescription": "Italy's fastest-growing DeFi community — 900 members in Rome, Florence, and Naples. We are close to home for ETHMilan and want to represent the Italian Ethereum scene on the big stage.",
+      "entityWebsite": "https://defiro.me",
+      "contactName": "Marco Fontana",
+      "contactEmail": "marco@defiro.me",
+      "goalAmount": 10000,
+      "raisedAmount": 2200,
+      "currency": "USD",
+      "status": "active",
+      "contributions": [
+        { "name": "Giulia Bianchi",    "email": "giulia@rome.eth",      "amount": 500, "message": "Forza DeFi Rome!",                "daysAgo": 3 },
+        { "name": "Luca Romano",       "email": "luca@staking.it",      "amount": 500,                                              "daysAgo": 2 },
+        { "name": "Alessandro Conti",  "email": "ale@layer2.io",        "amount": 700, "message": "Italian devs represent 🇮🇹",      "daysAgo": 1 },
+        { "name": "Francesca Riva",    "email": "fran@nft.it",          "amount": 500,                                              "daysAgo": 0 }
+      ]
+    },
+    {
+      "id": "demo-campaign-coffee-won",
+      "event": "ethmilan-2025",
+      "item": "coffee-sponsor",
+      "entityName": "zkSync Community Hub",
+      "entityDescription": "The official zkSync community channel with 5,000+ developers. We funded the coffee station at ETHPrague and want to bring that same energy to Milan.",
+      "entityWebsite": "https://zksync.community",
+      "contactName": "Anna Kowalski",
+      "contactEmail": "anna@zksync.community",
+      "goalAmount": 5000,
+      "raisedAmount": 5250,
+      "currency": "USD",
+      "status": "won",
+      "contributions": [
+        { "name": "Dev Mike",       "email": "mike@zk.dev",      "amount": 1000, "message": "zkSync coffee ☕ let's go",       "daysAgo": 8 },
+        { "name": "Priya Sharma",   "email": "priya@rollup.xyz", "amount": 500,                                               "daysAgo": 7 },
+        { "name": "Tom Walsh",      "email": "tom@evm.dev",      "amount": 750,  "message": "Happy to fund good coffee",      "daysAgo": 6 },
+        { "name": "Emma Liu",       "email": "emma@zk.io",       "amount": 1000,                                              "daysAgo": 5 },
+        { "name": "Felix König",    "email": "felix@berlin.eth", "amount": 500,  "message": "Prost! ☕",                       "daysAgo": 4 },
+        { "name": "Yuki Tanaka",    "email": "yuki@jpeth.dev",   "amount": 1000, "message": "Final push — goal reached!",    "daysAgo": 3 },
+        { "name": "Chloe Martin",   "email": "chloe@fr.eth",     "amount": 500,                                              "daysAgo": 3 }
+      ]
+    },
+    {
+      "id": "demo-campaign-silver-a",
+      "event": "ethmilan-2025",
+      "item": "silver-sponsor",
+      "entityName": "Web3 Istanbul",
+      "entityDescription": "Turkey's premier Web3 community, representing 3,000+ builders across Istanbul, Ankara, and Izmir. We want to send a delegation to ETHMilan and showcase the growing Turkish Ethereum ecosystem to Southern Europe.",
+      "entityWebsite": "https://web3istanbul.com",
+      "contactName": "Emre Yıldız",
+      "contactEmail": "emre@web3istanbul.com",
+      "goalAmount": 20000,
+      "raisedAmount": 3500,
+      "currency": "USD",
+      "status": "active",
+      "contributions": [
+        { "name": "Ayşe Kaya",    "email": "ayse@tr.eth",           "amount": 1000, "message": "Turkey is building! 🇹🇷",    "daysAgo": 4 },
+        { "name": "Burak Demir",  "email": "burak@defi.istanbul",  "amount": 500,                                           "daysAgo": 3 },
+        { "name": "Can Çelik",    "email": "can@validator.net",     "amount": 1500, "message": "Istanbul → Milan 🔥",        "daysAgo": 2 },
+        { "name": "Deniz Arslan", "email": "deniz@dao.tr",          "amount": 500,                                           "daysAgo": 1 }
+      ]
+    },
+    {
+      "id": "demo-campaign-community-sponsor-1",
+      "event": "ethmilan-2025",
+      "item": "community-sponsor",
+      "entityName": "DecentraVerse Foundation",
+      "entityDescription": "A non-profit advancing decentralised education and open-source tooling in the Ethereum ecosystem.",
+      "entityWebsite": "https://decentraverse.org",
+      "contactName": "Marco Fiori",
+      "contactEmail": "marco@decentraverse.org",
+      "goalAmount": 10000,
+      "raisedAmount": 4300,
+      "currency": "USD",
+      "status": "active",
+      "approvalStatus": "approved",
+      "approvedAt": "2026-03-20"
+    },
+    {
+      "id": "demo-campaign-community-sponsor-2",
+      "event": "ethmilan-2025",
+      "item": "community-sponsor",
+      "entityName": "Protokol Labs",
+      "entityDescription": "A developer collective building layer-2 tooling for EVM-compatible chains.",
+      "entityWebsite": "https://protokollabs.xyz",
+      "contactName": "Aisha Mensah",
+      "contactEmail": "aisha@protokollabs.xyz",
+      "goalAmount": 10000,
+      "raisedAmount": 1800,
+      "currency": "USD",
+      "status": "active",
+      "approvalStatus": "approved",
+      "approvedAt": "2026-03-22"
+    },
+    {
+      "id": "demo-campaign-newsletter-sponsor-1",
+      "event": "ethmilan-2025",
+      "item": "newsletter-sponsor",
+      "entityName": "DecentraVerse Foundation",
+      "entityDescription": "A non-profit advancing decentralised education and open-source tooling in the Ethereum ecosystem.",
+      "entityWebsite": "https://decentraverse.org",
+      "contactName": "Marco Fiori",
+      "contactEmail": "marco@decentraverse.org",
+      "goalAmount": 3000,
+      "raisedAmount": 1290,
+      "currency": "USD",
+      "status": "active",
+      "approvalStatus": "approved"
+    },
+    {
+      "id": "demo-campaign-newsletter-sponsor-2",
+      "event": "ethmilan-2025",
+      "item": "newsletter-sponsor",
+      "entityName": "Protokol Labs",
+      "entityDescription": "A developer collective building layer-2 tooling for EVM-compatible chains.",
+      "entityWebsite": "https://protokollabs.xyz",
+      "contactName": "Aisha Mensah",
+      "contactEmail": "aisha@protokollabs.xyz",
+      "goalAmount": 3000,
+      "raisedAmount": 540,
+      "currency": "USD",
+      "status": "active",
+      "approvalStatus": "approved"
+    },
+    {
+      "id": "demo-campaign-badge-sponsor-1",
+      "event": "ethmilan-2025",
+      "item": "badge-sponsor",
+      "entityName": "DecentraVerse Foundation",
+      "entityDescription": "A non-profit advancing decentralised education and open-source tooling in the Ethereum ecosystem.",
+      "entityWebsite": "https://decentraverse.org",
+      "contactName": "Marco Fiori",
+      "contactEmail": "marco@decentraverse.org",
+      "goalAmount": 7500,
+      "raisedAmount": 3225,
+      "currency": "USD",
+      "status": "active",
+      "approvalStatus": "approved"
+    },
+    {
+      "id": "demo-campaign-badge-sponsor-2",
+      "event": "ethmilan-2025",
+      "item": "badge-sponsor",
+      "entityName": "Protokol Labs",
+      "entityDescription": "A developer collective building layer-2 tooling for EVM-compatible chains.",
+      "entityWebsite": "https://protokollabs.xyz",
+      "contactName": "Aisha Mensah",
+      "contactEmail": "aisha@protokollabs.xyz",
+      "goalAmount": 7500,
+      "raisedAmount": 1350,
+      "currency": "USD",
+      "status": "active",
+      "approvalStatus": "approved"
+    }
+  ],
+
+  "bids": [
+    {
+      "id": "demo-bid-1",
+      "event": "ethmilan-2025",
+      "item": "premium-sponsor",
+      "status": "under_review",
+      "companyName": "Acme Protocol",
+      "contactName": "Alice Chen",
+      "email": "alice@acme.xyz",
+      "telegram": "@alicechen",
+      "proposedBudget": 25000,
+      "currency": "USD",
+      "notes": "We are very interested in the Premium package. We have been growing fast in the European market and ETHMilan is a perfect fit. Can we also discuss a speaking slot?",
+      "customAsks": "Panel slot topic: \"DeFi composability in 2025\"",
+      "internalNotes": "Strong lead - follow up about panel topic",
+      "assignedTo": "sales@ethglobal.com",
+      "messages": [
+        { "authorType": "sponsor",   "authorName": "Alice Chen", "content": "Hi! We're excited about the Premium Sponsor opportunity at ETHMilan. Acme Protocol has 12M weekly users and we'd love to discuss co-branding options.", "createdAt": "2026-03-10T09:15:00Z" },
+        { "authorType": "organizer", "authorName": "Sara Malik", "content": "Thanks Alice! We're reviewing your bid. A few questions: Can you share your target audience demographic, and are you interested in the networking dinner sponsorship add-on?", "createdAt": "2026-03-11T14:30:00Z" },
+        { "authorType": "sponsor",   "authorName": "Alice Chen", "content": "Our core audience is Ethereum devs and L2 ecosystem teams — exactly your crowd. Yes, very interested in the dinner add-on. Budget would be $25k + the dinner package.", "createdAt": "2026-03-12T10:00:00Z" }
+      ]
+    },
+    {
+      "id": "alice-bid-silver",
+      "event": "ethmilan-2025",
+      "item": "silver-sponsor",
+      "status": "countered",
+      "companyName": "Acme Protocol",
+      "contactName": "Alice Chen",
+      "email": "alice@acme.xyz",
+      "telegram": "@alicechen",
+      "proposedBudget": 17000,
+      "currency": "USD",
+      "notes": "Looking for a 15% discount given our multi-event commitment.",
+      "createdAt": "2026-02-20T08:00:00Z",
+      "counterOffer": {
+        "offeredPrice": 18500,
+        "currency": "USD",
+        "message": "We can meet you at $18,500 — includes the Silver package plus one extra speaking slot. Valid for 7 days.",
+        "validUntil": "2026-04-10T23:59:00Z",
+        "status": "pending"
+      },
+      "messages": [
+        { "authorType": "sponsor",   "authorName": "Alice Chen", "content": "Submitting at $17k — we have budget constraints this quarter but strong interest in ETHMilan.", "createdAt": "2026-02-20T08:05:00Z" },
+        { "authorType": "organizer", "authorName": "Sara Malik", "content": "Thanks Alice. We can offer $18,500 with an extra speaking slot. Counter-offer sent — please review.", "createdAt": "2026-03-01T12:05:00Z" }
+      ]
+    },
+    {
+      "id": "alice-bid-coffee",
+      "event": "ethmilan-2025",
+      "item": "coffee-sponsor",
+      "status": "accepted",
+      "companyName": "Acme Protocol",
+      "contactName": "Alice Chen",
+      "email": "alice@acme.xyz",
+      "proposedBudget": 5000,
+      "currency": "USD",
+      "notes": "Happy to brand the coffee station — great touchpoint for developers.",
+      "createdAt": "2026-01-15T10:00:00Z",
+      "order": {
+        "id": "alice-order-coffee",
+        "status": "paid",
+        "total": 5000,
+        "invoiceNumber": "INV-202601-000042",
+        "paidAt": "2026-01-22T11:30:00Z"
+      }
+    },
+    {
+      "id": "alice-bid-badge",
+      "event": "ethmilan-2025",
+      "item": "badge-sponsor",
+      "status": "accepted",
+      "companyName": "Acme Protocol",
+      "contactName": "Alice Chen",
+      "email": "alice@acme.xyz",
+      "proposedBudget": 7500,
+      "currency": "USD",
+      "notes": "Badge/lanyard branding — 800 impressions all day.",
+      "createdAt": "2026-03-01T09:00:00Z",
+      "order": {
+        "id": "alice-order-badge",
+        "status": "payment_pending",
+        "total": 7500
+      }
+    },
+    {
+      "id": "alice-bid-lunch",
+      "event": "ethmilan-2025",
+      "item": "lunch-sponsor",
+      "status": "submitted",
+      "companyName": "Acme Protocol",
+      "contactName": "Alice Chen",
+      "email": "alice@acme.xyz",
+      "proposedBudget": 11000,
+      "currency": "USD",
+      "notes": "Interested in the networking lunch — great opportunity to meet ecosystem leads.",
+      "createdAt": "2026-03-28T14:00:00Z"
+    },
+    {
+      "id": "alice-bid-screen",
+      "event": "ethmilan-2025",
+      "item": "screen-pack",
+      "status": "rejected",
+      "companyName": "Acme Protocol",
+      "contactName": "Alice Chen",
+      "email": "alice@acme.xyz",
+      "proposedBudget": 3000,
+      "currency": "USD",
+      "notes": "Digital ad placements across the venue screens.",
+      "createdAt": "2026-01-10T09:00:00Z",
+      "messages": [
+        { "authorType": "organizer", "authorName": "Sara Malik", "content": "Thanks for your interest Alice. Unfortunately this slot has been allocated to an exclusive sponsor. We'd love to find another package that works for Acme.", "createdAt": "2026-01-14T11:00:00Z" }
+      ]
+    },
+    {
+      "id": "alice-bid-newsletter",
+      "event": "ethmilan-2025",
+      "item": "newsletter-sponsor",
+      "status": "withdrawn",
+      "companyName": "Acme Protocol",
+      "contactName": "Alice Chen",
+      "email": "alice@acme.xyz",
+      "proposedBudget": 3000,
+      "currency": "USD",
+      "notes": "Newsletter slot — withdrawn due to budget reallocation.",
+      "createdAt": "2026-02-01T10:00:00Z"
+    }
+  ],
+
+  "demoOrders": [
+    { "id": "demo-order-1", "company": "Acme Protocol",    "contact": "Alice Chen",    "email": "alice@acme.xyz",   "total": 25000, "item": "premium-sponsor",     "paidDaysAgo": 45 },
+    { "id": "demo-order-2", "company": "Nexus Labs",       "contact": "Bob Tanaka",    "email": "bob@nexuslabs.io", "total": 15000, "item": "standard-sponsor",    "paidDaysAgo": 30 },
+    { "id": "demo-order-3", "company": "Stellar DeFi",     "contact": "Carol White",   "email": "carol@stellar.fi", "total": 12000, "item": "lunch-sponsor",       "paidDaysAgo": 20 },
+    { "id": "demo-order-4", "company": "ZeroKnowledge AG", "contact": "David Müller",  "email": "d@zk.ag",          "total": 8000,  "item": "badge-sponsor",       "paidDaysAgo": 15 },
+    { "id": "demo-order-5", "company": "Orbit Protocol",   "contact": "Emma Santos",   "email": "emma@orbit.io",    "total": 7500,  "item": "side-stage-branding", "paidDaysAgo": 10 },
+    { "id": "demo-order-6", "company": "Hydra Finance",    "contact": "Felix Okonkwo", "email": "f@hydra.fi",       "total": 5000,  "item": "coffee-sponsor",      "paidDaysAgo": 5  }
+  ],
+
+  "earlyAccessMembers": [
+    { "email": "sarah.chen@polygon.technology",  "name": "Sarah Chen",     "company": "Polygon Labs",                    "role": "organizer", "utmSource": "twitter",     "status": "waitlisted", "internalStatus": "new",      "createdAt": "2026-03-01T09:12:00Z" },
+    { "email": "marcus.rio@binance.com",         "name": "Marcus Rio",     "company": "Binance",                         "role": "sponsor",   "utmSource": "linkedin",    "status": "waitlisted", "internalStatus": "reviewed", "adminNotes": "Strong fit — Binance sponsors 10+ events per year. Follow up with deck.", "createdAt": "2026-03-02T14:30:00Z" },
+    { "email": "priya.nair@ethglobal.com",       "name": "Priya Nair",     "company": "ETHGlobal",                       "role": "organizer", "utmSource": "direct",      "status": "invited",    "internalStatus": "contacted","adminNotes": "Invited to closed beta. Runs ETHIndia and ETHTokyo.", "inviteCode": "BETA-PRIYA-001", "invitedAt": "2026-03-10T10:00:00Z", "createdAt": "2026-03-03T08:00:00Z" },
+    { "email": "tom.walker@a16z.com",            "name": "Tom Walker",     "company": "a16z crypto",                     "role": "sponsor",   "utmSource": "referral",    "status": "onboarded",  "internalStatus": "contacted","inviteCode": "BETA-TOM-002", "invitedAt": "2026-03-08T09:00:00Z", "onboardedAt": "2026-03-12T16:45:00Z", "createdAt": "2026-03-04T11:20:00Z" },
+    { "email": "lena.hoffman@devcon.org",        "name": "Lena Hoffmann",  "company": "Ethereum Foundation / Devcon",    "role": "organizer", "utmSource": "direct",      "status": "waitlisted", "internalStatus": "new",      "createdAt": "2026-03-05T15:00:00Z" },
+    { "email": "james.ko@coinbase.com",          "name": "James Ko",       "company": "Coinbase Ventures",               "role": "sponsor",   "utmSource": "twitter",     "status": "waitlisted", "internalStatus": "reviewed", "adminNotes": "Replied to our DM. Interested in logo placement at 3 events minimum.", "createdAt": "2026-03-06T10:05:00Z" },
+    { "email": "ana.silva@solana.org",           "name": "Ana Silva",      "company": "Solana Foundation",               "role": "sponsor",   "utmSource": "conference",  "status": "waitlisted", "internalStatus": "archived", "adminNotes": "Not a fit right now — focused on Solana-native events only.", "createdAt": "2026-03-07T12:30:00Z" },
+    { "email": "dev@zkstartup.io",               "name": "Dev Patel",      "company": "ZKStartup",                       "role": "organizer", "utmSource": "producthunt", "status": "waitlisted", "internalStatus": "new",      "createdAt": "2026-03-09T07:45:00Z" },
+    { "email": "claire.dubois@ledger.com",       "name": "Claire Dubois",  "company": "Ledger",                          "role": "sponsor",   "utmSource": "linkedin",    "status": "invited",    "internalStatus": "contacted","adminNotes": "Hardware wallet — great for in-person events. Invited to beta.", "inviteCode": "BETA-CLAIRE-003", "invitedAt": "2026-03-15T11:00:00Z", "createdAt": "2026-03-10T09:10:00Z" },
+    { "email": "ryan.nguyen@alchemy.com",        "name": "Ryan Nguyen",    "company": "Alchemy",                         "role": "sponsor",   "utmSource": "direct",      "status": "waitlisted", "internalStatus": "reviewed", "createdAt": "2026-03-11T14:00:00Z" },
+    { "email": "mia.johansson@ethsweden.io",     "name": "Mia Johansson", "company": "ETH Sweden",                      "role": "organizer", "utmSource": "twitter",     "status": "waitlisted", "internalStatus": "new",      "createdAt": "2026-03-12T08:30:00Z" },
+    { "email": "oliver.grant@uniswap.org",       "name": "Oliver Grant",   "company": "Uniswap Labs",                    "role": "sponsor",   "utmSource": "referral",    "status": "onboarded",  "internalStatus": "contacted","inviteCode": "BETA-OLIVER-004", "invitedAt": "2026-03-13T10:00:00Z", "onboardedAt": "2026-03-16T14:20:00Z", "createdAt": "2026-03-13T09:00:00Z" }
+  ],
+
+  "kycConfig": {
+    "tenant": "ethglobal",
+    "fields": [
+      { "key": "company_name",    "label": "Legal Company Name",            "type": "text",     "required": true,  "placeholder": "Acme Corp Ltd." },
+      { "key": "company_reg",     "label": "Company Registration Number",   "type": "text",     "required": true,  "placeholder": "e.g. 12345678" },
+      { "key": "company_type",    "label": "Company Type",                  "type": "select",   "required": true,  "options": ["LLC","C-Corp","Foundation","DAO","Other"] },
+      { "key": "country",         "label": "Country of Incorporation",      "type": "text",     "required": true,  "placeholder": "United States" },
+      { "key": "website",         "label": "Company Website",               "type": "url",      "required": true,  "placeholder": "https://acme.xyz" },
+      { "key": "contact_name",    "label": "Primary Contact Name",          "type": "text",     "required": true },
+      { "key": "contact_title",   "label": "Contact Title / Role",          "type": "text",     "required": false },
+      { "key": "tax_id",          "label": "Tax ID / VAT Number",           "type": "text",     "required": false, "placeholder": "EU123456789" },
+      { "key": "billing_address", "label": "Billing Address",               "type": "textarea", "required": true },
+      { "key": "invoice_email",   "label": "Invoice Email",                 "type": "email",    "required": true }
+    ]
+  },
+
+  "kycSubmissions": [
+    {
+      "id": "kyc-sub-1",
+      "bidId": "demo-bid-1",
+      "status": "submitted",
+      "data": { "company_name": "Acme Protocol GmbH", "company_reg": "HRB 123456", "company_type": "LLC", "country": "Germany", "website": "https://acme.xyz", "contact_name": "Alice Chen", "contact_title": "Head of Partnerships", "billing_address": "Friedrichstraße 55, 10117 Berlin, Germany", "invoice_email": "finance@acme.xyz" }
+    },
+    {
+      "id": "kyc-sub-2",
+      "status": "approved",
+      "reviewNotes": "All documents verified. Entity confirmed via Companies House.",
+      "reviewedAt": "2026-03-10T14:30:00Z",
+      "data": { "company_name": "Paradigm Operations LLC", "company_reg": "7891234", "company_type": "LLC", "country": "United States", "website": "https://paradigm.xyz", "contact_name": "Matt Huang", "contact_title": "Partner", "billing_address": "548 Market St #39536, San Francisco CA 94104", "invoice_email": "billing@paradigm.xyz" }
+    },
+    {
+      "id": "kyc-sub-3",
+      "status": "needs_more_info",
+      "reviewNotes": "Please provide a valid VAT number and updated billing address for EU invoicing.",
+      "reviewedAt": "2026-03-12T09:15:00Z",
+      "data": { "company_name": "Uniswap Labs", "company_reg": "5556677", "company_type": "LLC", "country": "United States", "website": "https://uniswap.org", "contact_name": "Hayden Adams", "contact_title": "CEO", "billing_address": "130 West 42nd Street, New York NY 10036", "invoice_email": "ops@uniswap.org" }
+    },
+    {
+      "id": "kyc-sub-4",
+      "status": "not_started",
+      "data": null
+    },
+    {
+      "id": "kyc-sub-5",
+      "status": "rejected",
+      "reviewNotes": "Unable to verify entity registration. Company appears to be dissolved.",
+      "reviewedAt": "2026-02-28T11:00:00Z",
+      "data": { "company_name": "Defunct DAO LLC", "company_reg": "N/A", "company_type": "DAO", "country": "Cayman Islands", "website": "https://defunct.io", "contact_name": "Anonymous", "billing_address": "PO Box 1234, Grand Cayman", "invoice_email": "anon@defunct.io" }
+    }
+  ],
+
+  "outreachContacts": [
+    { "name": "Stani Kulechov",    "email": "stani@aave.com",               "company": "Aave",               "title": "Founder & CEO",        "status": "converted",  "tags": ["defi","protocol"],      "notes": "Confirmed Gold sponsor for ETHMilan 2025. Invoice sent.",                                    "convertedAt": "2026-02-14T10:00:00Z" },
+    { "name": "Kain Warwick",      "email": "kain@synthetix.io",            "company": "Synthetix",           "title": "Founder",              "status": "responded",  "tags": ["defi","derivatives"],   "notes": "Interested in speaking slot + branding package. Follow up with deck." },
+    { "name": "Illia Polosukhin",  "email": "illia@near.org",               "company": "NEAR Protocol",      "title": "Co-Founder",           "status": "contacted",  "tags": ["l1","protocol"],        "notes": "First outreach sent 2026-03-01. No reply yet.",                                            "inviteSentAt": "2026-03-01T08:00:00Z" },
+    { "name": "Emin Gün Sirer",    "email": "emin@avax.network",            "company": "Ava Labs",            "title": "CEO",                  "status": "contacted",  "tags": ["l1","avalanche"],       "notes": "Sent personalised deck highlighting L1 stage opportunity.",                                "inviteSentAt": "2026-03-05T09:30:00Z" },
+    { "name": "Robert Leshner",    "email": "robert@compound.finance",      "company": "Compound",            "title": "Founder",              "status": "new",        "tags": ["defi","lending"] },
+    { "name": "Sergey Nazarov",    "email": "sergey@chain.link",            "company": "Chainlink Labs",      "title": "Co-Founder",           "status": "new",        "tags": ["oracle","infrastructure"] },
+    { "name": "Linda Xie",         "email": "linda@scalar.capital",         "company": "Scalar Capital",      "title": "Managing Director",    "status": "responded",  "tags": ["vc","investor"],        "notes": "Interested in VIP table + networking dinner access." },
+    { "name": "Haseeb Qureshi",    "email": "haseeb@dragonfly.xyz",         "company": "Dragonfly Capital",   "title": "Managing Partner",     "status": "new",        "tags": ["vc","investor"] },
+    { "name": "Brady Dale",        "email": "brady@axios.com",              "company": "Axios",               "title": "Crypto Reporter",      "status": "contacted",  "tags": ["media","press"],        "notes": "Comped press pass offer sent. Covering ETHMilan for Axios.",                               "inviteSentAt": "2026-03-08T11:00:00Z" },
+    { "name": "Laura Shin",        "email": "laura@unchainedcrypto.com",    "company": "Unchained Podcast",   "title": "Host",                 "status": "archived",   "tags": ["media","podcast"],      "notes": "Scheduling conflict — follow up for next edition." },
+    { "name": "Camila Russo",      "email": "camila@thedefiant.io",         "company": "The Defiant",         "title": "Founder",              "status": "converted",  "tags": ["media","defi"],         "notes": "Media partner confirmed. Co-marketing assets exchanged.",                                  "convertedAt": "2026-02-20T14:00:00Z" },
+    { "name": "Mara Schmiedt",     "email": "mara@alluvial.finance",        "company": "Alluvial Finance",    "title": "CEO",                  "status": "new",        "tags": ["staking","infrastructure"] }
+  ],
+
+  "accessGrants": {
+    "emailGrants": [
+      "vitalik@ethereum.org",
+      "hayden@uniswap.org",
+      "stani@aave.com",
+      "kain@synthetix.io",
+      "banteg@yearn.finance",
+      "gauntlet@gauntlet.network",
+      "paradigm@paradigm.xyz"
+    ],
+    "tokenGrants": [
+      { "token": "ethmilan-vip-alpha-2025",     "expiresAt": "2026-09-30", "usedAt": "2026-03-10" },
+      { "token": "ethmilan-press-beta-2025",    "expiresAt": "2026-09-30", "usedAt": null },
+      { "token": "ethmilan-partner-gamma-2025", "expiresAt": null,         "usedAt": null },
+      { "token": "ethmilan-speaker-delta-2025", "expiresAt": "2026-06-01", "usedAt": "2026-02-20" },
+      { "token": "ethmilan-sponsor-epsilon-2025","expiresAt": null,        "usedAt": null }
+    ]
+  }
+}
