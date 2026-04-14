@@ -39,6 +39,16 @@ export function createEmailClient(config: EmailConfig): EmailClient {
     };
   }
 
+  // Console provider for dev/test without SMTP
+  if (config.provider === 'smtp' && !config.smtpHost) {
+    return {
+      async send(message) {
+        console.log('[email:console]', JSON.stringify({ to: message.to, subject: message.subject }));
+        return {};
+      },
+    };
+  }
+
   // Default to SMTP (nodemailer) — works with Mailpit in dev
   const nodemailer = require('nodemailer');
   const transporter = nodemailer.createTransport({
@@ -64,6 +74,15 @@ export function createEmailClient(config: EmailConfig): EmailClient {
 }
 
 export function createEmailClientFromEnv(): EmailClient {
+  const provider = (process.env.EMAIL_PROVIDER ?? 'console') as 'resend' | 'smtp' | 'console';
+  if (provider === 'console' || (provider as string) === 'console') {
+    return {
+      async send(message: EmailMessage) {
+        console.log('[email:console]', JSON.stringify({ to: message.to, subject: message.subject }));
+        return {};
+      },
+    };
+  }
   return createEmailClient({
     provider: (process.env.EMAIL_PROVIDER ?? 'smtp') as 'resend' | 'smtp',
     from: process.env.EMAIL_FROM ?? 'noreply@moongate.xyz',

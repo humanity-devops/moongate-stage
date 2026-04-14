@@ -62,3 +62,4 @@ tmp/
 
 # Local TLS certificates (machine-specific)
 .root-certs.pem
+.vercel
