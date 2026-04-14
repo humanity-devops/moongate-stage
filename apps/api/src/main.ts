@@ -72,6 +72,9 @@ await fastify.register(cors, {
   origin: [
     'http://localhost:3000',
     'http://localhost:3001',
+    env.APP_URL,
+    /\.vercel\.app$/,
+    /\.up\.railway\.app$/,
   ],
   credentials: true,
 });
